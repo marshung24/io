@@ -2,7 +2,7 @@
     "name": "marshung/io",
     "description": "Import and Export Builder",
     "homepage": "https://github.com/marshung24/io",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
