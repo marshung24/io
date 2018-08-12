@@ -32,7 +32,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
         $this->_options['sheetName'] = '簡易模式-批次加保範本';
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'simple';
-        $this->_options['requiredField'] = array();
+        $this->_options['requiredField'] = array('u_no');
     }
 
     /**

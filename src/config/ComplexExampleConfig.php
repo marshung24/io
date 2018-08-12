@@ -32,7 +32,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         $this->_options['sheetName'] = '非固定科目';
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'complex';
-        $this->_options['requiredField'] = array();
+        $this->_options['requiredField'] = array('u_no');
     }
 
     /**
