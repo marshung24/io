@@ -154,7 +154,7 @@ class ExcelBuilder
             'xlsx',
             'xls'
         ))) {
-            throw new \Exception(get_language('wrongtype'), 400);
+            throw new \Exception('Wrong file format!', 400);
         }
         
         // 使用資料讀取模式取得$spreadsheet物件
@@ -676,6 +676,9 @@ class ExcelBuilder
                 // 驗証失敗，跳出
                 break;
             }
+            
+            // issue#13 Trim all data when parsing imported data
+            $row = array_map('trim', $row);
             
             // 取得資料
             $data[] = $row;
