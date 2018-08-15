@@ -664,6 +664,8 @@ class ExcelBuilder
         $data = array();
         $sheet = $this->_builder->getSheet($config['sheetName']);
         $this->_builder->setSheet($sheet);
+        // Content Validate Error Count
+        $rowError = 0;
         while ($row = $this->_builder->getRow()) {
             // 略過不要的資料 - 標題
             if ($titleRowNumber > 0) {
@@ -671,10 +673,19 @@ class ExcelBuilder
                 continue;
             }
             
-            // 匯入資料驗証 - 必要欄位驗証
+            // 匯入資料驗証 - 必要欄位驗証 - issue#12 連續三組必要欄位都為空時，才跳出
             if (! $this->_config->contentValidate($row)) {
-                // 驗証失敗，跳出
-                break;
+                $rowError ++;
+                // 驗証失敗
+                if ($rowError >= 3) {
+                    // 3 or more times, break
+                    break;
+                } else {
+                    // less then 3 times, ignore this row
+                    continue;
+                }
+            } else {
+                $rowError = 0;
             }
             
             // issue#13 Trim all data when parsing imported data
