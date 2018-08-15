@@ -227,23 +227,24 @@ abstract class Config
             // 模式：複雜(complex)
             $config = array(
                 'config' => array(
-                    'name' => '結構名稱',
+                    'type' => '{種類:title/content/foot}',
+                    'name' => '{結構名稱}',
                     'style' => array(
-                        '結構自定樣式集'
+                        '{結構自定樣式集，可為空陣列}'
                     ),
-                    'class' => '結構自定樣式名'
+                    'class' => '{結構自定樣式名，可為空字串}'
                 ),
                 'defined' => array(
-                    'key' => array(
-                        'key' => '鍵名',
-                        'value' => '(在結構設定中，此值為該欄位名稱)',
-                        'desc' => '說明',
+                    '{鍵名}' => array(
+                        'key' => '{鍵名}',
+                        'value' => '{(在結構設定中，此值為該欄位名稱)}',
+                        'desc' => '{說明}',
                         'col' => '1',
                         'row' => '1',
                         'style' => array(),
                         'class' => '',
-                        'default' => '預設值',
-                        'list' => '下拉選單名'
+                        'default' => '{預設值}',
+                        'list' => '{下拉選單名}'
                     )
                 )
             );

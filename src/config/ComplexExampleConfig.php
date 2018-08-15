@@ -101,6 +101,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         // 標題1
         $this->_title[] = array(
             'config' => array(
+                // 標題的type必為title
                 'type' => 'title',
                 'name' => 'title1',
                 'style' => array(
@@ -165,6 +166,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         // 標題2
         $this->_title[] = array(
             'config' => array(
+                // 標題的type必為title
                 'type' => 'title',
                 'name' => 'example',
                 'style' => array(),
@@ -235,6 +237,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         // 內容
         $this->_content = array(
             'config' => array(
+                // 內容的type必為content
                 'type' => 'content',
                 'name' => 'content',
                 'style' => array(),
@@ -299,6 +302,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      * 結尾定義函式
      *
      * 單一結尾定義可擁有單列資料，所以可定義多個結尾定義
+     * 結尾的type必為foot
      */
     protected function footDefined()
     {}
