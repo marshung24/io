@@ -17,8 +17,6 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
      */
     public function __construct()
     {
-        parent::__construct();
-        
         // 設定檔版號
         $this->_options['version'] = '0.1';
         // 設定檔名稱
@@ -28,8 +26,11 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
         ), '', __CLASS__));
         // 工作表名稱
         $this->_options['sheetName'] = 'Worksheet';
-        // 模式：簡易(simple)、複雜(complex)
-        $this->_options['type'] = 'simple';
+        // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
+        $this->_options['type'] = 'detect';
+        
+        // 初始化
+        $this->initialize();
     }
 
     /**

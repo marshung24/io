@@ -19,8 +19,6 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      */
     public function __construct()
     {
-        parent::__construct();
-        
         // 設定檔版號
         $this->_options['version'] = '0.1';
         // 設定檔名稱
@@ -33,6 +31,9 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'complex';
         $this->_options['requiredField'] = array('u_no');
+        
+        // 初始化
+        $this->initialize();
     }
 
     /**
