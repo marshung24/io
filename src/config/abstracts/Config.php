@@ -27,8 +27,8 @@ abstract class Config
         'minVersion' => '0.1',
         'configName' => __CLASS__,
         'sheetName' => 'Worksheet',
-        // 模式：簡易(simple)、複雜(complex)
-        'type' => 'simple',
+        // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
+        'type' => 'detect',
         // 必要欄位，必需有值，提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
         'requiredField' => array()
     );
@@ -178,6 +178,8 @@ abstract class Config
     {
         if (empty($this->_title)) {
             $this->titleDefined();
+            // 模式促偵測及複雜模式config type重寫處理
+            $this->structureTypeSet('title');
         }
         
         return $this->_title;
@@ -192,6 +194,8 @@ abstract class Config
     {
         if (empty($this->_content)) {
             $this->contentDefined();
+            // 模式促偵測及複雜模式config type重寫處理
+            $this->structureTypeSet('content');
         }
         
         return $this->_content;
@@ -206,6 +210,8 @@ abstract class Config
     {
         if (empty($this->_foot)) {
             $this->footDefined();
+            // 模式促偵測及複雜模式config type重寫處理
+            $this->structureTypeSet('foot');
         }
         
         return $this->_foot;
@@ -365,6 +371,8 @@ abstract class Config
             // 沒有傳入值時
             $this->titleDefined();
         }
+        // 模式促偵測及複雜模式config type重寫處理
+        $this->structureTypeSet('title');
         
         return $this;
     }
@@ -389,6 +397,8 @@ abstract class Config
             // 設定資料範本 - 鍵值表及預設值
             $this->templateDefined();
         }
+        // 模式促偵測及複雜模式config type重寫處理
+        $this->structureTypeSet('content');
         
         return $this;
     }
@@ -409,6 +419,8 @@ abstract class Config
         } else {
             $this->footDefined();
         }
+        // 模式促偵測及複雜模式config type重寫處理
+        $this->structureTypeSet('foot');
         
         return $this;
     }
@@ -736,7 +748,7 @@ abstract class Config
      */
     public function definedFilter(& $defined)
     {
-        if (isset($defined['defined'])) {
+        if (isset($defined['defined']) && is_array($defined['defined'])) {
             // 模式：複雜(complex)
             $def = & $defined['defined'];
             
@@ -758,7 +770,69 @@ abstract class Config
      */
     public function getRowFromDefined($defined)
     {
-        return isset($defined['defined']) ? $defined['defined'] : $defined;
+        return isset($defined['defined']) && is_array($defined['defined']) ? $defined['defined'] : $defined;
+    }
+
+    /**
+     * 模式促偵測及複雜模式config type重寫處理
+     *
+     * 複雜模式中的$config['config']['type']值是固定的，為防止使用者設定錯誤，取值時覆寫成固定值
+     *
+     * @param string $type
+     *            模式 title,content,foot
+     */
+    protected function structureTypeSet($type)
+    {
+        // 自動偵測設定模式
+        $this->configTypeDetect();
+        
+        // 複雜模式才處理
+        if ($this->_options['type'] != 'complex') {
+            return false;
+        }
+        
+        switch ($type) {
+            case 'title':
+                // 標題
+                foreach ($this->_title as & $row) {
+                    $row['config']['type'] = $type;
+                }
+                break;
+            case 'content':
+                // 內容
+                $this->_content['config']['type'] = $type;
+                break;
+            case 'foot':
+                // 結尾
+                foreach ($this->_foot as & $row) {
+                    $row['config']['type'] = $type;
+                }
+                break;
+        }
+    }
+
+    /**
+     * 自動偵測設定模式
+     */
+    protected function configTypeDetect()
+    {
+        // 待偵測時處理
+        if ($this->_options['type'] == 'detect') {
+            // 取得樣本
+            $sample = array();
+            if (sizeof($this->_title) > 0) {
+                $sample = $this->_title[0];
+            } elseif (sizeof($this->_content) > 0) {
+                $sample = $this->_content;
+            } elseif (sizeof($this->_foot) > 0) {
+                $sample = $this->_foot[0];
+            }
+            
+            // 模式偵測
+            if (! empty($sample)) {
+                $this->_options['type'] = isset($sample['defined']) && is_array($sample['defined']) ? 'complex' : 'simple';
+            }
+        }
     }
 
     /**
