@@ -616,6 +616,9 @@ abstract class Config
                 
                 // 執行資料轉換 value <=> text - 單筆資料
                 $this->valueTextConv($key, $row);
+                
+                // issue#13 Trim all data when parsing imported data
+                $row = array_map('trim', $row);
             }
         }
         

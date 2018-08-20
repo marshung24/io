@@ -688,9 +688,6 @@ class ExcelBuilder
                 $rowError = 0;
             }
             
-            // issue#13 Trim all data when parsing imported data
-            $row = array_map('trim', $row);
-            
             // 取得資料
             $data[] = $row;
         }
