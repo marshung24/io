@@ -808,8 +808,8 @@ class ExcelBuilder
         foreach ($this->_data as $k => $row) {
             // 重寫欄位定義的value - 保持定義格式
             foreach ($row as $key => $col) {
-                if (isset($rowData[$key])) {
-                    if (isset($rowData[$key]['value'])) {
+                if (array_key_exists($key, $rowData)) {
+                    if ($this->_config->getOption('type') == 'complex') {
                         // 模式：複雜(complex)
                         $rowData[$key]['value'] = $col;
                     } else {

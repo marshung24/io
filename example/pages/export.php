@@ -10,22 +10,7 @@
 function export1()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export1001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export1002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('1');
     
     // IO物件建構
     $io = new \marshung\io\IO();
@@ -40,22 +25,7 @@ function export1()
 function export2()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export2001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export2002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('12');
     
     // IO物件建構
     $io = new \marshung\io\IO();
@@ -70,22 +40,7 @@ function export2()
 function export3()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export3001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export3002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('3');
     
     // IO物件建構
     $io = new \marshung\io\IO();
@@ -109,22 +64,7 @@ function export3()
 function export4()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export4001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export4002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('4');
     
     // IO物件建構
     $io = new \marshung\io\IO();
@@ -138,22 +78,7 @@ function export4()
 function export5()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export5001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export5002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('5');
     
     // 結構定義-簡易模式
     $defined = array(
@@ -204,22 +129,7 @@ function export5()
 function export6()
 {
     // 取得原始資料
-    $data = [
-        [
-            'u_no' => 'export6001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-        ],
-        [
-            'u_no' => 'export6002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456789',
-            'birthday' => '20001-01-01',
-            'gender' => '1',
-        ]
-    ];
+    $data = getData('6');
     
     // 結構定義-複雜模式
     // 標題1
@@ -445,3 +355,57 @@ function export6()
     $io->setData($data)->exportBuilder();
 }
 
+
+
+/**
+ * *************** Data ***************
+ */
+
+function getData($number = '1')
+{
+    // 取得原始資料
+    return $data = [
+        [
+            'u_no' => 'export'.$number.'001',
+            'c_name' => 'Mars',
+            'id_no' => 'A234567890',
+            'birthday' => '2000-01-01',
+            'gender' => '1',
+        ],
+        [
+            'u_no' => 'export'.$number.'002',
+            'c_name' => 'Jack',
+            'id_no' => 'A123456751',
+            'birthday' => null,
+            'gender' => '1',
+        ],
+        [
+            'u_no' => 'export'.$number.'003',
+            'c_name' => 'Marry',
+            'id_no' => 'A223456789',
+            'birthday' => '2003-05-06',
+            'gender' => '0',
+        ],
+        [
+            'u_no' => 'export'.$number.'004',
+            'c_name' => 'Joe',
+            'id_no' => 'A123456743',
+            'birthday' => null,
+            'gender' => '1',
+        ],
+        [
+            'u_no' => 'export'.$number.'005',
+            'c_name' => 'Ann',
+            'id_no' => 'A223434252',
+            'birthday' => null,
+            'gender' => '0',
+        ],
+        [
+            'u_no' => 'export'.$number.'006',
+            'c_name' => 'Judy',
+            'id_no' => 'A223467893',
+            'birthday' => '2006-08-22',
+            'gender' => '0',
+        ]
+    ];
+}
