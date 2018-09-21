@@ -14,6 +14,7 @@
 <a href="index.php?op=export4">匯出 - 空的結構定義物件</a><br/>
 <a href="index.php?op=export5">匯出 - 手動處理 - 簡易模式</a><br/>
 <a href="index.php?op=export6">匯出 - 手動處理 - 複雜模式</a><br/>
+<a href="index.php?op=export7">匯出 - 手動處理 - 簡易模式 - 數字key</a><br/>
 
 <br/>
 

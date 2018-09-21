@@ -355,6 +355,59 @@ function export6()
     $io->setData($data)->exportBuilder();
 }
 
+/**
+ * 匯出 - 手動處理 - 簡易模式 - 數字key
+ */
+function export7()
+{
+    // 取得原始資料
+    $data = getData('7');
+    foreach ($data as & $d) {
+        $d = array_values($d);
+    }
+    
+    // 結構定義-簡易模式
+    $defined = array(
+        '員工編號',
+        '姓名',
+        '身分證字號',
+        '出生年月日',
+        '性別'
+    );
+    
+    // IO物件建構
+    $io = new \marshung\io\IO();
+    
+    // 手動建構相關物件
+    $io->setConfig()
+    ->setBuilder()
+    ->setStyle();
+    
+    // 載入外部定義
+    $conf = $io->getConfig()
+    ->setTitle($defined)
+    ->setContent($defined);
+    
+    // 建構外部對映表
+    $listMap = array(
+        'gender' => array(
+            array(
+                'value' => '1',
+                'text' => '男'
+            ),
+            array(
+                'value' => '0',
+                'text' => '女'
+            )
+        )
+    );
+    
+    // 載入外部對映表
+    $conf->setList($listMap);
+    
+    // 匯出處理 - 建構匯出資料 - 手動處理
+    $io->setData($data)->exportBuilder();
+}
 
 
 /**

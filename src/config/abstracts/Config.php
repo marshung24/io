@@ -552,8 +552,8 @@ abstract class Config
         foreach ($data as $key => &$row) {
             $row = (array) $row;
             
-            // 以資料內容範本為模版合併資料
-            $row = array_merge($this->_dataTemplate, $row);
+            // 以資料內容範本為模版合併資料 - 為支援numeric key，改用 +
+            $row = $row + $this->_dataTemplate;
             
             // 內容整併處理時執行 - 迴圈內自定步驟
             $this->eachRefactor($key, $row);
