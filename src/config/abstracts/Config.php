@@ -591,8 +591,9 @@ abstract class Config
     /**
      * 匯入資料解析
      *
-     * 將匯入的資料依資料範本給key，並做資料轉換 text=>value
-     *
+     * 1. 將匯入的資料依資料範本給key，並做資料轉換 text=>value
+     * 2. 複雜模式如有欄位合並時，一並處理資料平移
+     * 
      * @param array $data
      *            匯入的原始資料
      * @return \marshung\io\config\abstracts\Config
@@ -610,6 +611,9 @@ abstract class Config
             // 遍歷資料，並解析
             foreach ($data as $key => &$row) {
                 $row = (array) $row;
+                    
+                // 匯入資料解析 - 複雜模式欄位合併之資料平移處理
+                $this->contentDataShift4Complex($row);
                 
                 $row = array_slice($row, 0, $templateSize);
                 $row = array_combine($templateKey, $row);
@@ -838,6 +842,38 @@ abstract class Config
         }
     }
 
+    /**
+     * 匯入資料解析 - 複雜模式欄位合併之資料平移處理
+     *
+     * @param array $row            
+     */
+    protected function contentDataShift4Complex(& $row)
+    {
+        if ($this->_options['type'] == 'complex') {
+            $isShift = false;
+            $cellCount = 0;
+            // 遍歷欄位定義，檢查欄位合併
+            foreach ($this->_content['defined'] as $key => $cell) {
+                $cw = isset($cell['col']) ? (int)$cell['col'] : 1;
+                // 有多欄位合併，處理空欄位
+                if ($cw > 1) {
+                    $isShift = true;
+                    for ($i = $cellCount + 1; $i < $cellCount + $cw; $i++) {
+                        unset($row[$i]);
+                    }
+                }
+                
+                // 下一個位址
+                $cellCount += $cw;
+            }
+            // 重整索引
+            if ($isShift) {
+                $row = array_values($row);
+            }
+        }
+    }
+    
+    
     /**
      * **********************************************
      * ************** Abstract Function **************
