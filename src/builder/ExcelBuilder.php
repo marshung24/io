@@ -482,8 +482,8 @@ class ExcelBuilder
             ]);
             
             // 取得本次結束座標
-            $colNow = $this->_builder->getSheet()->getHighestColumn();
-            $rowNow = $this->_builder->getSheet()->getHighestRow();
+            $colEnd = $this->_builder->getSheet()->getHighestColumn();
+            $rowEnd = $this->_builder->getSheet()->getHighestRow();
             
             // 座標記錄 - 每個子結尾 - 樣式
             $this->offsetMapSet('foot', $fRow, $colStart, $rowEnd, $colEnd, $rowEnd);
