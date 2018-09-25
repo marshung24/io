@@ -184,11 +184,21 @@ function export6()
                 'list' => ''
             ),
             't5' => array(
-                'key' => 't4',
+                'key' => 't5',
                 'value' => '性別',
                 'col' => '2',
                 'row' => '1',
                 'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't6' => array(
+                'key' => 't6',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
                 'class' => '',
                 'default' => '',
                 'list' => ''
@@ -246,11 +256,21 @@ function export6()
                 'list' => ''
             ),
             't5' => array(
-                'key' => 't4',
+                'key' => 't5',
                 'value' => '男',
                 'col' => '2',
                 'row' => '1',
                 'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't6' => array(
+                'key' => 't6',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
                 'class' => '',
                 'default' => '',
                 'list' => ''
@@ -316,6 +336,16 @@ function export6()
                 'class' => '',
                 'default' => '1',
                 'list' => ''
+            ),
+            'text' => array(
+                'key' => 'text',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
+                'class' => '',
+                'default' => '1',
+                'list' => ''
             )
         )
     );
@@ -372,7 +402,8 @@ function export7()
         '姓名',
         '身分證字號',
         '出生年月日',
-        '性別'
+        '性別',
+        '備註'
     );
     
     // IO物件建構
@@ -424,6 +455,7 @@ function getData($number = '1')
             'id_no' => 'A234567890',
             'birthday' => '2000-01-01',
             'gender' => '1',
+            'text' => '11',
         ],
         [
             'u_no' => 'export'.$number.'002',
@@ -431,6 +463,7 @@ function getData($number = '1')
             'id_no' => 'A123456751',
             'birthday' => null,
             'gender' => '1',
+            'text' => '1',
         ],
         [
             'u_no' => 'export'.$number.'003',
@@ -438,6 +471,7 @@ function getData($number = '1')
             'id_no' => 'A223456789',
             'birthday' => '2003-05-06',
             'gender' => '0',
+            'text' => '-11',
         ],
         [
             'u_no' => 'export'.$number.'004',
@@ -445,6 +479,7 @@ function getData($number = '1')
             'id_no' => 'A123456743',
             'birthday' => null,
             'gender' => '1',
+            'text' => '0',
         ],
         [
             'u_no' => 'export'.$number.'005',
@@ -452,6 +487,7 @@ function getData($number = '1')
             'id_no' => 'A223434252',
             'birthday' => null,
             'gender' => '0',
+            'text' => -111,
         ],
         [
             'u_no' => 'export'.$number.'006',
@@ -459,6 +495,7 @@ function getData($number = '1')
             'id_no' => 'A223467893',
             'birthday' => '2006-08-22',
             'gender' => '0',
+            'text' => 111,
         ]
     ];
 }

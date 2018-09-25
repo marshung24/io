@@ -106,7 +106,8 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
             '姓名',
             '身分證字號',
             '生日',
-            '性別'
+            '性別',
+            '備註'
         );
         
         // 設定標題定義
@@ -127,7 +128,8 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
             'c_name' => '',
             'id_no' => '',
             'birthday' => '',
-            'gender' => '1'
+            'gender' => '1',
+            'text' => ''
         );
         
         // 設定內容定義

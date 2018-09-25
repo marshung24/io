@@ -520,7 +520,8 @@ class ExcelStyleBuilder
      */
     public static function excelFormatMap($format)
     {
+        // 如果格式表中不存在，以該字串為格式 - 支援自定義格式
         $formatMap = self::$_styleMap['excelFormatMap'];
-        return isset($formatMap[$format]) ? $formatMap[$format] : \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
+        return isset($formatMap[$format]) ? $formatMap[$format] : $format;//\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
     }
 }

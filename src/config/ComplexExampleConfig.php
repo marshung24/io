@@ -152,11 +152,23 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'list' => ''
                 ),
                 't5' => array(
-                    'key' => 't4',
+                    'key' => 't5',
                     'value' => '性別',
                     'col' => '2',
                     'row' => '1',
                     'style' => array(),
+                    'class' => '',
+                    'default' => '',
+                    'list' => ''
+                ),
+                't6' => array(
+                    'key' => 't6',
+                    'value' => '備註',
+                    'col' => '1',
+                    'row' => '1',
+                    'style' => array(
+                        'format' =>'0.0_ ;[Red]\-0.0\ '
+                    ),
                     'class' => '',
                     'default' => '',
                     'list' => ''
@@ -215,11 +227,23 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'list' => ''
                 ),
                 't5' => array(
-                    'key' => 't4',
+                    'key' => 't5',
                     'value' => '男',
                     'col' => '2',
                     'row' => '1',
                     'style' => array(),
+                    'class' => '',
+                    'default' => '',
+                    'list' => ''
+                ),
+                't6' => array(
+                    'key' => 't6',
+                    'value' => '222',
+                    'col' => '1',
+                    'row' => '1',
+                    'style' => array(
+                        'format' =>'0.0_ ;[Red]\-0.0\ '
+                    ),
                     'class' => '',
                     'default' => '',
                     'list' => ''
@@ -291,6 +315,18 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'col' => '2',
                     'row' => '1',
                     'style' => array(),
+                    'class' => '',
+                    'default' => '1',
+                    'list' => ''
+                ),
+                'text' => array(
+                    'key' => 'text',
+                    'value' => '備註',
+                    'col' => '1',
+                    'row' => '1',
+                    'style' => array(
+                        'format' => '0.0_ ;[Red]\-0.0\ '
+                    ),
                     'class' => '',
                     'default' => '1',
                     'list' => ''
