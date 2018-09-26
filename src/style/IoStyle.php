@@ -234,15 +234,17 @@ class IoStyle
         $this->_classMap['content'] = array(
             'border-all-color' => 'FFAAAAAA', // 欄線顏色-全部
             'border-outline-style' => 'thick' // 外圈欄線樣式
-                                                  // 'row-odd-background-color' => 'F7F7F7',//內容奇數列背景顏色
-                                                  // 'row-even-background-color' => 'white'//內容偶數列背景顏色
+            // 'row-odd-background-color' => 'F7F7F7',//內容奇數列背景顏色
+            // 'row-even-background-color' => 'white'//內容偶數列背景顏色
         );
         
         // 預設-結尾樣式集
         $this->_classMap['foot'] = array(
-            'font-color' => 'white', // 字體顏色
-            'background-color' => 'FFA0A0A2', // 儲存格背景顏色
-            'align-horizontal' => 'left' // 水平對齊
+            'font-color' => 'black', // 字體顏色
+            'background-color' => 'FFDBDCDC', // 儲存格背景顏色
+            'border-all-color' => 'FFAAAAAA', // 欄線顏色-全部
+            'border-outline-style' => 'thin' // 外圈欄線樣式
+            // 'align-horizontal' => 'left' // 水平對齊
         );
         
         // 預設-範例樣式集

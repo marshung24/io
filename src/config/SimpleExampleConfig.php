@@ -143,9 +143,12 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
      */
     protected function footDefined()
     {
-        $foot = array();
+        $foot = array(
+            '結尾定義列',
+            'marshung/io',
+        );
         
         // 設定結尾定義
-        $this->setContent($foot);
+        $this->setFoot($foot);
     }
 }

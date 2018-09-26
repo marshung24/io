@@ -342,5 +342,37 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      * 結尾的type必為foot
      */
     protected function footDefined()
-    {}
+    {
+        $this->_foot[] = array(
+            'config' => array(
+                // 內容的type必為foot
+                'type' => 'foot',
+                'name' => 'foot',
+                'style' => array(),
+                'class' => ''
+            ),
+            'defined' => array(
+                'f1' => array(
+                    'key' => 'f1',
+                    'value' => '結尾定義列',
+                    'col' => '3',
+                    'row' => '1',
+                    'style' => array(),
+                    'class' => '',
+                    'default' => '',
+                    'list' => ''
+                ),
+                'f2' => array(
+                    'key' => 'f2',
+                    'value' => 'marshung/io',
+                    'col' => '3',
+                    'row' => '1',
+                    'style' => array(),
+                    'class' => '',
+                    'default' => '1',
+                    'list' => ''
+                )
+            )
+        );
+    }
 }
