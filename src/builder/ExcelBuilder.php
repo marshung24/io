@@ -279,12 +279,14 @@ class ExcelBuilder
         $format = ($format) ? $format : $this->_options['outputFormat'];
         $format = strtolower($format);
         
+        // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
+        $this->_builder->setSheet(0);
+        
         switch ($format) {
             case 'file':
             default:
                 $name = ($name) ? $name : $this->_options['fileName'];
                 
-                $this->_builder->setSheet(1);
                 $this->_builder->output($name);
                 break;
             case 'src':
@@ -292,7 +294,6 @@ class ExcelBuilder
             case 'sheet':
             case 'spreadsheet':
             case 'phpspreadsheet':
-                $this->_builder->setSheet(1);
                 return $this->_builder->getSpreadsheet();
                 break;
         }
@@ -370,7 +371,7 @@ class ExcelBuilder
         // ====== 參數工作表格式 ======
         // 保護工作表
         $configSheet->getProtection()->setSheet(true);
-        // 隱藏工作表
+        // 隱藏工作表 SHEETSTATE_VERYHIDDEN / SHEETSTATE_HIDDEN
         $configSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_VERYHIDDEN);
         // 設定A欄寬度
         $configSheet->getDefaultColumnDimension()->setWidth('15');
