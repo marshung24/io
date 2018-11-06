@@ -386,7 +386,7 @@ function export6()
 }
 
 /**
- * 匯出 - 手動處理 - 簡易模式 - 數字key
+ * 匯出 - 手動處理 - 簡易模式 - 數字key + 回傳spreadsheet做style後處理
  */
 function export7()
 {
@@ -433,11 +433,59 @@ function export7()
         )
     );
     
+    $builder = $io->getBuilder();
+    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    $builder->setOption('object', 'outputFormat');
+    
     // 載入外部對映表
     $conf->setList($listMap);
     
-    // 匯出處理 - 建構匯出資料 - 手動處理
-    $io->setData($data)->exportBuilder();
+    // 匯出處理 - 建構匯出資料 - 手動處理 + 回傳spreadsheet做style後處理)
+    $spreadsheet = $io->setData($data)->exportBuilder();
+    
+    // 自定樣式 - style後處理
+    $titleStyle = ['background-color' => 'FF0094D8'];
+    $titleRange = 'B4:D4';
+    \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+    
+    // 輸出
+    $builder->output('export7', 'file');
+}
+
+/**
+ * 匯出 - 有資料的結構定義物件(複雜模式結構定義物件-範本)
+ */
+function export8()
+{
+    // 取得原始資料
+    $data = getData('3');
+    
+    // IO物件建構
+    $io = new \marshung\io\IO();
+    
+    // 匯出處理 - 物件注入方式
+    $config = new \marshung\io\config\ComplexExampleConfig();
+    $builder = new \marshung\io\builder\ExcelBuilder();
+    $style = new \marshung\io\style\IoStyle();
+    
+    // 必要欄位設定 - 提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
+    $config->setOption([
+        'u_no'
+    ], 'requiredField');
+    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    $builder->setOption('object', 'outputFormat');
+    
+    // 欄位B凍結
+    $style->setFreeze('B');
+    $spreadsheet = $io->export($data, $config, $builder, $style);
+    
+    // 自定樣式 - style後處理
+    $titleStyle = ['background-color' => 'FF0094D8'];
+    $titleRange = 'A4:C4';
+    \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+    
+    // 輸出
+    $builder->output('my_file', 'file');
 }
 
 

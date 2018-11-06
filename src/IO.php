@@ -124,7 +124,7 @@ class IO
         $this->setStyle($style);
         
         // 匯出建構並輸出
-        $this->exportBuilder();
+        return $this->exportBuilder();
     }
 
     /**
@@ -341,7 +341,10 @@ class IO
         }
         
         // 載入參數
-        $this->_builder->setOption($this->_options);
+        foreach ($this->_options as $key => $value) {
+            $this->_builder->setOption($value, $key);
+        }
+        
         // 載入資料
         $this->_builder->setData($this->_data);
         // 載入結構定義
@@ -355,7 +358,7 @@ class IO
         }
         
         // 建構資料 & 輸出
-        $this->_builder->build()->output();
+        return $this->_builder->build()->output();
     }
 
     /**

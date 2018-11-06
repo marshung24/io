@@ -26,8 +26,10 @@ class ExcelBuilder
      */
     protected $_options = array(
         'fileName' => 'export',
+        // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+        'outputFormat' => 'file',
         'builder' => 'excel',
-        'builderVersion' => '0.1'
+        'builderVersion' => '0.1',
     );
 
     /**
@@ -264,15 +266,36 @@ class ExcelBuilder
 
     /**
      * 輸出資料 - 匯出成品
-     *
-     * @param string $name            
+     * 
+     * Output data according to the format specified by $format,$this->_options['outputFormat']
+     * 
+     * @param string $name 輸出檔名
+     * @param string $format 輸出格式，優先序大於$this->_options['outputFormat']
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet | file
      */
-    public function output($name = '')
+    public function output($name = '', $format = '')
     {
-        $name = ($name) ? $name : $this->_options['fileName'];
+        // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+        $format = ($format) ? $format : $this->_options['outputFormat'];
+        $format = strtolower($format);
         
-        $this->_builder->setSheet(1);
-        $this->_builder->output($name);
+        switch ($format) {
+            case 'file':
+            default:
+                $name = ($name) ? $name : $this->_options['fileName'];
+                
+                $this->_builder->setSheet(1);
+                $this->_builder->output($name);
+                break;
+            case 'src':
+            case 'object':
+            case 'sheet':
+            case 'spreadsheet':
+            case 'phpspreadsheet':
+                $this->_builder->setSheet(1);
+                return $this->_builder->getSpreadsheet();
+                break;
+        }
     }
 
     /**

@@ -704,6 +704,77 @@ $conf = $io->getConfig()
 
 ```
 
+### 樣式後處理
+為因應過於特殊的樣式設定，開放樣式後處理
+
+#### 自動模式-樣式後處理
+```
+// 取得原始資料
+$data = getData('3');
+
+// IO物件建構
+$io = new \marshung\io\IO();
+
+// 匯出處理 - 物件注入方式
+$config = new \marshung\io\config\ComplexExampleConfig();
+$builder = new \marshung\io\builder\ExcelBuilder();
+$style = new \marshung\io\style\IoStyle();
+
+// Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+$builder->setOption('object', 'outputFormat');
+
+// 建構輸出物件
+$spreadsheet = $io->export($data, $config, $builder, $style);
+
+// 自定樣式 - style後處理
+$titleStyle = ['background-color' => 'FF0094D8'];
+$titleRange = 'A4:C4';
+\marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+
+// 重新輸出
+$builder->output('my_file_name', 'file');
+```
+
+
+#### 手動模式-樣式後處理
+```
+// 取得原始資料
+$data = getData('7');
+
+// 結構定義-簡易模式
+$defined = array('....');
+
+// IO物件建構
+$io = new \marshung\io\IO();
+
+// 手動建構相關物件
+$io->setConfig()->setBuilder()->setStyle();
+
+// 載入外部定義
+$conf = $io->getConfig()->setTitle($defined)->setContent($defined);
+
+// 建構外部對映表
+$listMap = array('...');
+
+// 取得建構物件
+$builder = $io->getBuilder();
+// Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+$builder->setOption('object', 'outputFormat');
+
+// 載入外部對映表
+$conf->setList($listMap);
+
+// 匯出處理 - 建構匯出資料
+$spreadsheet = $io->setData($data)->exportBuilder();
+
+// 自定樣式 - style後處理
+$titleStyle = ['background-color' => 'FF0094D8'];
+$titleRange = 'B4:D4';
+\marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+
+// 重新輸出
+$builder->output('export7', 'file');
+```
 
 
 
