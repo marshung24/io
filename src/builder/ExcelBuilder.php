@@ -279,14 +279,13 @@ class ExcelBuilder
         $format = ($format) ? $format : $this->_options['outputFormat'];
         $format = strtolower($format);
         
-        // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
-        $this->_builder->setSheet(0);
-        
         switch ($format) {
             case 'file':
             default:
-                $name = ($name) ? $name : $this->_options['fileName'];
+                // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
+                $this->_builder->setSheet(0);
                 
+                $name = ($name) ? $name : $this->_options['fileName'];
                 $this->_builder->output($name);
                 break;
             case 'src':
@@ -294,6 +293,10 @@ class ExcelBuilder
             case 'sheet':
             case 'spreadsheet':
             case 'phpspreadsheet':
+                // 取得設定檔參數-工作表名稱
+                $sheetName = $this->_config->getOption('sheetName');
+                $sheet = $this->_builder->getSheet($sheetName, true);
+                $this->_builder->setSheet($sheet);
                 return $this->_builder->getSpreadsheet();
                 break;
         }
