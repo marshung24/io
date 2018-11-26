@@ -468,6 +468,9 @@ function export8()
     $builder = new \marshung\io\builder\ExcelBuilder();
     $style = new \marshung\io\style\IoStyle();
     
+    // 測試工作表名稱過濾
+    $config->setOption('[測試工作表名稱過濾]測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾', 'sheetName');
+    
     // 必要欄位設定 - 提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
     $config->setOption([
         'u_no'

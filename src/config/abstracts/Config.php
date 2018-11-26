@@ -26,6 +26,7 @@ abstract class Config
         'version' => '0.1',
         'minVersion' => '0.1',
         'configName' => __CLASS__,
+        // Sheet Title：1.Excel的SheetTitle最多31個字 2.不可用於Sheet Title的七個字元 \ / * [ ] : ?
         'sheetName' => 'Worksheet',
         // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
         'type' => 'detect',
@@ -122,6 +123,9 @@ abstract class Config
      */
     public function initialize()
     {
+        // Sheet name filter
+        $this->sheetNameFilter();
+        
         // ====== 初始化定義 ======
         $this->_title = array();
         $this->_content = array();
@@ -350,6 +354,9 @@ abstract class Config
         } else {
             $this->_options[$optionName] = $option;
         }
+        
+        // Sheet name filter
+        $this->sheetNameFilter();
         
         return $this;
     }
@@ -873,6 +880,14 @@ abstract class Config
         }
     }
     
+    /**
+     * Sheet name filter
+     */
+    protected function sheetNameFilter()
+    {
+        // Sheet Title處理：1.Excel的SheetTitle最多31個字 2.移除不可用於Sheet Title的七個字元 \ / * [ ] : ?
+        $this->_options['sheetName'] = rtrim(mb_substr(trim(preg_replace('|[\\\/\*\]\[\:\?]|', '', $this->_options['sheetName'])), 0, 31));
+    }
     
     /**
      * **********************************************
