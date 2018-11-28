@@ -491,6 +491,45 @@ function export8()
     $builder->output('my_file', 'file');
 }
 
+/**
+ * 匯出 - 有資料的結構定義物件(複雜模式結構定義物件-範本)
+ */
+function export9()
+{
+    // 取得原始資料
+    $data = null;
+    
+    // IO物件建構
+    $io = new \marshung\io\IO();
+    
+    // 匯出處理 - 物件注入方式
+    $config = new \marshung\io\config\ComplexExampleConfig();
+    $builder = new \marshung\io\builder\ExcelBuilder();
+    $style = new \marshung\io\style\IoStyle();
+    
+    // 測試工作表名稱過濾
+    $config->setOption('[測試工作表名稱過濾]測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾測試工作表名稱過濾', 'sheetName');
+    
+    // 必要欄位設定 - 提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
+    $config->setOption([
+        'u_no'
+    ], 'requiredField');
+    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    $builder->setOption('object', 'outputFormat');
+    
+    // 欄位B凍結
+    $style->setFreeze('B');
+    $spreadsheet = $io->export($data, $config, $builder, $style);
+    
+    // 自定樣式 - style後處理
+    $titleStyle = ['background-color' => 'FF0094D8'];
+    $titleRange = 'A3:C3';
+    \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+    
+    // 輸出
+    $builder->output('export9', 'file');
+}
+
 
 /**
  * *************** Data ***************

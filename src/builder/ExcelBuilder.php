@@ -209,7 +209,7 @@ class ExcelBuilder
      */
     public function setData($data)
     {
-        $this->_data = $data;
+        $this->_data = empty($data) ? [null]: (array)$data;
         return $this;
     }
 
