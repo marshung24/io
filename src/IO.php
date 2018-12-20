@@ -1,6 +1,8 @@
 <?php
 namespace marshung\io;
 
+use marshung\io\builder\ExcelBuilder;
+
 /**
  * 匯入匯出入口物件
  *
@@ -326,8 +328,12 @@ class IO
     
     /**
      * 匯出建構並輸出
+     * 
+     * @param string $fileName 輸出檔名
+     * @param string $format 輸出類型 builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+     * @return ExcelBuilder
      */
-    public function exportBuilder()
+    public function exportBuilder($fileName = '', $format = '')
     {
         // 物件檢查
         if (empty($this->_builder)) {
@@ -358,7 +364,7 @@ class IO
         }
         
         // 建構資料 & 輸出
-        return $this->_builder->build()->output();
+        return $this->_builder->build()->output($fileName, $format);
     }
 
     /**

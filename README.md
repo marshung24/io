@@ -1,6 +1,22 @@
 匯出匯入模組
 ===
 
+# 目錄
+- [說明](#說明)
+- [安裝](#安裝)
+- [用法](#用法)
+  - [有資料的結構定義物件](#有資料的結構定義物件)
+  - [空的結構定義物件](#空的結構定義物件)
+  - [手動處理-簡易模式](#手動處理-簡易模式)
+  - [手動處理-複雜模式](#手動處理-複雜模式)
+- [樣式](#樣式)
+  - [可用清單](#可用清單)
+  - [設定方式](#設定方式)
+  - [手動-複雜模式-樣式](#手動-複雜模式-樣式)
+  - [樣式後處理](#樣式後處理)
+- [多頁工作表](#多頁工作表)
+
+
 # 說明
 為簡化匯出匯入使用法式，編寫此模組
 
@@ -129,7 +145,7 @@ echo 'Data = ';
 var_export($data);
 ```
 
-## 手動處理 - 簡易模式
+## 手動處理-簡易模式
 如果資料欄位為變動長度時，將無法定義完善的結構定義物件，此時可用手動模式
 
 > 當然，此狀況可以定義好可預期的欄位結構，然後出現額外的欄位時，使用$config的getTitle(),getContent()取出資料並改寫，再利用setTitle(),setContent()回寫，並用setList()補充對映表資料即可
@@ -215,7 +231,7 @@ echo 'Data = ';
 var_export($data);
 ```
 
-## 手動處理 - 複雜模式
+## 手動處理-複雜模式
 如果資料欄位為變動長度時，將無法定義完善的結構定義物件，此時可用手動模式
 
 > 當然，此狀況可以定義好可預期的欄位結構，然後出現額外的欄位時，使用$config的getTitle(),getContent()取出資料並改寫，再利用setTitle(),setContent()回寫，並用setList()補充對映表資料即可
@@ -644,7 +660,7 @@ $this->_title[] = array(
 
 ```
 
-### 手動 - 複雜模式
+### 手動-複雜模式-樣式
 ```
 $style = new \marshung\io\style\IoStyle();
 $style->setClass(array(
@@ -777,7 +793,31 @@ $builder->output('export7', 'file');
 ```
 
 
+# 多頁工作表
+```
+// 取得原始資料
+$data = getData('10');
+$deptData = getDeptData('10');
 
+// 匯出處理 - 物件注入方式
+$config1 = new \marshung\io\config\ComplexExampleConfig();
+$config2 = new \marshung\io\config\ComplexExampleDeptConfig();
+$builder = new \marshung\io\builder\ExcelBuilder();
+$style = new \marshung\io\style\IoStyle();
+
+// 欄位B凍結
+$style->setFreeze('B');
+
+// 手動建構相關物件
+$spreadsheet = $builder->setData($data)
+    ->setConfig($config1)
+    ->setStyle($style)
+    ->build()
+    ->setConfig($config2)
+    ->setData($deptData)
+    ->build()
+    ->output('export-10', 'file');
+```
 
 
 

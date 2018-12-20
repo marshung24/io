@@ -26,12 +26,18 @@ class ExcelBuilder
      */
     protected $_options = array(
         'fileName' => 'export',
-        // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+        // Output format: builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
         'outputFormat' => 'file',
         'builder' => 'excel',
         'builderVersion' => '0.1',
     );
 
+    /**
+     * 暫存變數
+     * @var array
+     */
+    protected $_cache = [];
+    
     /**
      * 資料
      *
@@ -59,6 +65,7 @@ class ExcelBuilder
      * @var array $_listMap['目標鍵名'] = array(array('value' => '數值','text' => '數值名稱'),.....);
      */
     protected $_listMap = array();
+    protected $_externalListMap = array();
 
     /**
      * phpSpreadsheetHelper
@@ -223,12 +230,12 @@ class ExcelBuilder
     {
         // 設定檔物件
         $this->_config = $config;
+        // 取得資料
+        $this->_listMap = $this->_config->getList();
         // 載入下拉選單定義 - 二者都可能有值
-        foreach ($this->_listMap as $k => $map) {
-            $this->_config->setList($map, $k);
+        foreach ($this->_externalListMap as $k => $map) {
+            $this->_listMap[$k] = $map;
         }
-        // 傳址對應
-        $this->_listMap = & $this->_config->getList();
         return $this;
     }
 
@@ -256,9 +263,9 @@ class ExcelBuilder
     public function setList(Array $mapData, $key = null)
     {
         if (is_null($key)) {
-            $this->_listMap = $mapData;
+            $this->_externalListMap= $mapData;
         } else {
-            $this->_listMap[$key] = $mapData;
+            $this->_externalListMap[$key] = $mapData;
         }
         
         return $this;
@@ -270,7 +277,7 @@ class ExcelBuilder
      * Output data according to the format specified by $format,$this->_options['outputFormat']
      * 
      * @param string $name 輸出檔名
-     * @param string $format 輸出格式，優先序大於$this->_options['outputFormat']
+     * @param string $format 輸出格式，優先序大於$this->_options['outputFormat'] builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
      * @return \PhpOffice\PhpSpreadsheet\Spreadsheet | file
      */
     public function output($name = '', $format = '')
@@ -280,6 +287,9 @@ class ExcelBuilder
         $format = strtolower($format);
         
         switch ($format) {
+            case 'builder':
+                return $this;
+                break;
             case 'file':
             default:
                 // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
@@ -313,12 +323,16 @@ class ExcelBuilder
     /**
      * 載入下拉選單定義 - 額外定義資料
      *
-     * @param string $list
-     *            定義檔
+     * @param string $type
+     *            資料種類 全部(all)、外部(external)
      */
-    public function getList()
+    public function getList($type = 'all')
     {
-        return $this->_listMap;
+        if ($type == 'all') {
+            return $this->_listMap;
+        } else {
+            return $this->_externalListMap;
+        }
     }
 
     /**
@@ -334,6 +348,10 @@ class ExcelBuilder
      */
     public function build()
     {
+        $this->_cache['buildCount'] = isset($this->_cache['buildCount']) ? $this->_cache['buildCount'] + 1 : 1;
+        $this->_offsetMap = [];
+        $this->_listAddrMap = [];
+        
         // 參數工作表設定
         $this->optionBuilder();
         
@@ -363,12 +381,15 @@ class ExcelBuilder
      */
     public function optionBuilder($inBuilder = true)
     {
-        if ($inBuilder) {
+        if ($inBuilder && $this->_cache['buildCount'] === 1) {
             // 第一張表更名為設工作表 ConfigSheet
             $configSheet = $this->_builder->setSheet(0, 'ConfigSheet')->getSheet();
         } else {
             // 外部呼叫執行的
             $configSheet = $this->_builder->getSheet('ConfigSheet', true);
+            // 重設參數工作表
+            $this->_builder->setSheet($configSheet);
+            $this->_builder->setRowOffset($configSheet->getHighestRow());
         }
         
         // ====== 參數工作表格式 ======
@@ -603,6 +624,8 @@ class ExcelBuilder
      */
     public function listBuilder()
     {
+//         echo $this->_cache['buildCount']."\n";
+        
         // 記錄原工作表索引 - 取得下拉選單的目標工作表索引
         $sheet = $this->_builder->getSheet();
         
@@ -610,6 +633,9 @@ class ExcelBuilder
         // 取得內容列數起訖
         $rowStart = $this->offsetMap('content', 'rowStart');
         $rowEnd = $this->offsetMap('content', 'rowEnd');
+        
+//         echo '$rowStart = '.$rowStart."\n";
+//         echo '$rowEnd = '.$rowEnd."\n";
         
         // 取得內容定義資料
         $content = $this->_config->getContent();
@@ -633,11 +659,15 @@ class ExcelBuilder
             if (! isset($this->_listMap[$key])) {
                 continue;
             }
-            
+//             var_export($this->_listMap[$key]);
+//             echo __LINE__."\n";
             // ====== 將下拉選單繫結到目標工作表 ======
             // 取得資料Key對映的Excel欄位碼 - 簡易模式或傳入資料陣列時，欄位碼需計算
             $colCode = $this->_builder->getColumnMap($key);
             $colCode = empty($colCode) ? $this->_builder->num2alpha($colCount) : $colCode;
+            
+//             echo '$colCode = '.$colCode."\n";
+            
             // 遍歷目標欄位的各cell - 下拉選單需一cell一cell的繫結
             for ($i = $rowStart; $i <= $rowEnd; $i ++) {
                 // 對指定欄位建構下拉選單結構
@@ -976,12 +1006,12 @@ class ExcelBuilder
             // 將下拉選單資料建構成下拉選單結構資料表
             $this->_listAddrMapBuilder();
         }
-        
         // 參數設定 - 無標題時預設為key名稱
         $cellTitle = is_string($cellTitle) ? $cellTitle : $listKey;
         
         // 有下拉選單結構時才處理
         if (isset($this->_listAddrMap[$listKey])) {
+//             echo __LINE__."\n";
             // 對指定欄位建構下拉選單結構
             $sheet->getCell($cellLocation)
                 ->getDataValidation()

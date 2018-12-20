@@ -1,5 +1,8 @@
 <?php
 
+include_once('data.php');
+
+
 /**
  * example for export
  */
@@ -14,6 +17,7 @@ function export1()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-01', 'fileName');
     
     // 匯出處理 - 建構匯出資料 - 簡易模式結構定義物件-範本
     $io->export($data, $config = 'SimpleExample', $builder = 'Excel', $style = 'Io');
@@ -29,6 +33,8 @@ function export2()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-02', 'fileName');
+    
     
     // 匯出處理 - 建構匯出資料 - 複雜模式結構定義物件-範本
     $io->export($data, $config = 'ComplexExample', $builder = 'Excel', $style = 'Io');
@@ -44,6 +50,7 @@ function export3()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-03', 'fileName');
     
     // 匯出處理 - 物件注入方式
     $config = new \marshung\io\config\SimpleExampleConfig();
@@ -68,6 +75,8 @@ function export4()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-04', 'fileName');
+    
     // 匯出處理 - 建構匯出資料 - 空的結構定義物件
     $io->export($data, $config = 'Empty', $builder = 'Excel', $style = 'Io');
 }
@@ -91,6 +100,7 @@ function export5()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-05', 'fileName');
     
     // 手動建構相關物件
     $io->setConfig()
@@ -352,6 +362,7 @@ function export6()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-06', 'fileName');
     
     // 手動建構相關物件
     $io->setConfig()
@@ -408,6 +419,7 @@ function export7()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-07', 'fileName');
     
     // 手動建構相關物件
     $io->setConfig()
@@ -434,7 +446,7 @@ function export7()
     );
     
     $builder = $io->getBuilder();
-    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    // Output format: builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
     $builder->setOption('object', 'outputFormat');
     
     // 載入外部對映表
@@ -449,7 +461,7 @@ function export7()
     \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
     
     // 輸出
-    $builder->output('export7', 'file');
+    $builder->output('export-07_output', 'file');
 }
 
 /**
@@ -458,10 +470,11 @@ function export7()
 function export8()
 {
     // 取得原始資料
-    $data = getData('3');
+    $data = getData('8');
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-08', 'fileName');
     
     // 匯出處理 - 物件注入方式
     $config = new \marshung\io\config\ComplexExampleConfig();
@@ -475,7 +488,7 @@ function export8()
     $config->setOption([
         'u_no'
     ], 'requiredField');
-    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    // Output format: builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
     $builder->setOption('object', 'outputFormat');
     
     // 欄位B凍結
@@ -488,7 +501,7 @@ function export8()
     \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
     
     // 輸出
-    $builder->output('my_file', 'file');
+    $builder->output('', 'file');
 }
 
 /**
@@ -501,6 +514,7 @@ function export9()
     
     // IO物件建構
     $io = new \marshung\io\IO();
+    $io->setOption('export-09', 'fileName');
     
     // 匯出處理 - 物件注入方式
     $config = new \marshung\io\config\ComplexExampleConfig();
@@ -514,7 +528,7 @@ function export9()
     $config->setOption([
         'u_no'
     ], 'requiredField');
-    // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+    // Output format: builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
     $builder->setOption('object', 'outputFormat');
     
     // 欄位B凍結
@@ -530,62 +544,49 @@ function export9()
     $builder->output('export9', 'file');
 }
 
-
 /**
- * *************** Data ***************
+ * 匯出 - 二頁-複雜模式
  */
-
-function getData($number = '1')
+function export10()
 {
     // 取得原始資料
-    return $data = [
-        [
-            'u_no' => 'export'.$number.'001',
-            'c_name' => 'Mars',
-            'id_no' => 'A234567890',
-            'birthday' => '2000-01-01',
-            'gender' => '1',
-            'text' => '11',
-        ],
-        [
-            'u_no' => 'export'.$number.'002',
-            'c_name' => 'Jack',
-            'id_no' => 'A123456751',
-            'birthday' => null,
-            'gender' => '1',
-            'text' => '1',
-        ],
-        [
-            'u_no' => 'export'.$number.'003',
-            'c_name' => 'Marry',
-            'id_no' => 'A223456789',
-            'birthday' => '2003-05-06',
-            'gender' => '0',
-            'text' => '-11',
-        ],
-        [
-            'u_no' => 'export'.$number.'004',
-            'c_name' => 'Joe',
-            'id_no' => 'A123456743',
-            'birthday' => null,
-            'gender' => '1',
-            'text' => '0',
-        ],
-        [
-            'u_no' => 'export'.$number.'005',
-            'c_name' => 'Ann',
-            'id_no' => 'A223434252',
-            'birthday' => null,
-            'gender' => '0',
-            'text' => -111,
-        ],
-        [
-            'u_no' => 'export'.$number.'006',
-            'c_name' => 'Judy',
-            'id_no' => 'A223467893',
-            'birthday' => '2006-08-22',
-            'gender' => '0',
-            'text' => 111,
-        ]
-    ];
+    $data = getData('10');
+    $deptData = getDeptData('10');
+    
+    // 匯出處理 - 物件注入方式
+    $config1 = new \marshung\io\config\ComplexExampleConfig();
+    $config2 = new \marshung\io\config\ComplexExampleDeptConfig();
+    $builder = new \marshung\io\builder\ExcelBuilder();
+    $style = new \marshung\io\style\IoStyle();
+    
+//     // 必要欄位設定 - 提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
+//     $config1->setOption([
+//         'u_no'
+//     ], 'requiredField');
+//     // Output format: builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+//     $builder->setOption('object', 'outputFormat');
+//     // 欄位B凍結
+//     $style->setFreeze('B');
+    
+    // 手動建構相關物件
+    $spreadsheet = $builder->setData($data)
+        ->setConfig($config1)
+        ->setStyle($style)
+        ->build()
+        ->setConfig($config2)
+        ->setData($deptData)
+        ->build()
+        ->output('', 'src');
+    
+//     // 自定樣式 - style後處理
+//     $titleStyle = [
+//         'background-color' => 'FF0094D8'
+//     ];
+//     $titleRange = 'A3:C3';
+//     $spreadsheet->setActiveSheetIndex(1);
+//     \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
+    
+    // 輸出
+    $builder->output('export-10', 'file');
 }
+

@@ -9,7 +9,7 @@ namespace marshung\io\config;
  * @author Mars.Hung (tfaredxj@gmail.com) 2018-06-11
  *        
  */
-class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
+class ComplexExampleDeptConfig extends \marshung\io\config\abstracts\Config
 {
 
     /**
@@ -27,10 +27,10 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
             '\\'
         ), '', __CLASS__));
         // 工作表名稱
-        $this->_options['sheetName'] = '帳號資料';
+        $this->_options['sheetName'] = '部門資料';
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'complex';
-        $this->_options['requiredField'] = array('u_no');
+        $this->_options['requiredField'] = array('d_code');
         
         // 初始化
         $this->initialize();
@@ -64,24 +64,32 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      */
     protected function listMapInitialize()
     {
-        // 對映表建構 - 性別 - gender
-        $this->genderMapBuilder();
+        // 對映表建構 - 層級 - level
+        $this->levelMapBuilder();
     }
 
     /**
      * 對映表建構 - 性別 - gender
      */
-    protected function genderMapBuilder()
+    protected function levelMapBuilder()
     {
         // 寫入對映表
-        $this->_listMap['gender'] = array(
+        $this->_listMap['d_level'] = array(
             array(
                 'value' => '1',
-                'text' => '男'
+                'text' => '組'
             ),
             array(
-                'value' => '0',
-                'text' => '女'
+                'value' => '2',
+                'text' => '課'
+            ),
+            array(
+                'value' => '3',
+                'text' => '部'
+            ),
+            array(
+                'value' => '4',
+                'text' => '處'
             )
         );
     }
@@ -113,7 +121,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
             'defined' => array(
                 't1' => array(
                     'key' => 't1',
-                    'value' => '帳號',
+                    'value' => '部門編號',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -123,7 +131,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 ),
                 't2' => array(
                     'key' => 't2',
-                    'value' => '姓名',
+                    'value' => '部門名稱',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -132,8 +140,8 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'list' => ''
                 ),
                 't3' => array(
-                    'key' => 't3',
-                    'value' => '身分證字號',
+                    'key' => '層級',
+                    'value' => '',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -143,32 +151,10 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 ),
                 't4' => array(
                     'key' => 't4',
-                    'value' => '生日',
+                    'value' => '主管',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
-                    'class' => '',
-                    'default' => '',
-                    'list' => ''
-                ),
-                't5' => array(
-                    'key' => 't5',
-                    'value' => '性別',
-                    'col' => '2',
-                    'row' => '1',
-                    'style' => array(),
-                    'class' => '',
-                    'default' => '',
-                    'list' => ''
-                ),
-                't6' => array(
-                    'key' => 't6',
-                    'value' => '備註',
-                    'col' => '1',
-                    'row' => '1',
-                    'style' => array(
-                        'format' =>'0.0_ ;[Red]\-0.0\ '
-                    ),
                     'class' => '',
                     'default' => '',
                     'list' => ''
@@ -188,7 +174,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
             'defined' => array(
                 't1' => array(
                     'key' => 't1',
-                    'value' => 'A001',
+                    'value' => 'RD',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -198,7 +184,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 ),
                 't2' => array(
                     'key' => 't2',
-                    'value' => '派大星',
+                    'value' => '開發部',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -208,7 +194,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 ),
                 't3' => array(
                     'key' => 't3',
-                    'value' => 'ET9000001',
+                    'value' => '部',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -218,32 +204,10 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 ),
                 't4' => array(
                     'key' => 't4',
-                    'value' => '2000-01-01',
+                    'value' => 'Manager.Rd',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
-                    'class' => '',
-                    'default' => '',
-                    'list' => ''
-                ),
-                't5' => array(
-                    'key' => 't5',
-                    'value' => '男',
-                    'col' => '2',
-                    'row' => '1',
-                    'style' => array(),
-                    'class' => '',
-                    'default' => '',
-                    'list' => ''
-                ),
-                't6' => array(
-                    'key' => 't6',
-                    'value' => '222',
-                    'col' => '1',
-                    'row' => '1',
-                    'style' => array(
-                        'format' =>'0.0_ ;[Red]\-0.0\ '
-                    ),
                     'class' => '',
                     'default' => '',
                     'list' => ''
@@ -269,19 +233,9 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 'class' => ''
             ),
             'defined' => array(
-                'u_no' => array(
-                    'key' => 'u_no',
-                    'value' => '帳號',
-                    'col' => '1',
-                    'row' => '1',
-                    'style' => array('format' => 'general'),
-                    'class' => '',
-                    'default' => '',
-                    'list' => ''
-                ),
-                'c_name' => array(
-                    'key' => 'c_name',
-                    'value' => '姓名',
+                'd_code' => array(
+                    'key' => 'd_code',
+                    'value' => '',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -289,9 +243,9 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'default' => '',
                     'list' => ''
                 ),
-                'id_no' => array(
-                    'key' => 'id_no',
-                    'value' => '身分證字號',
+                'd_name' => array(
+                    'key' => 'd_name',
+                    'value' => '',
                     'col' => '1',
                     'row' => '1',
                     'style' => array(),
@@ -299,36 +253,24 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'default' => '',
                     'list' => ''
                 ),
-                'birthday' => array(
-                    'key' => 'birthday',
-                    'value' => '生日',
+                'd_level' => array(
+                    'key' => 'd_level',
+                    'value' => '',
                     'col' => '1',
                     'row' => '1',
-                    'style' => array('format' => 'date'),
+                    'style' => array(),
                     'class' => '',
                     'default' => '',
                     'list' => ''
                 ),
-                'gender' => array(
-                    'key' => 'gender',
-                    'value' => '性別',
-                    'col' => '2',
+                'd_manager' => array(
+                    'key' => 'd_manager',
+                    'value' => '',
+                    'col' => '1',
                     'row' => '1',
                     'style' => array(),
                     'class' => '',
-                    'default' => '1',
-                    'list' => ''
-                ),
-                'text' => array(
-                    'key' => 'text',
-                    'value' => '備註',
-                    'col' => '1',
-                    'row' => '1',
-                    'style' => array(
-                        'format' => '0.0_ ;[Red]\-0.0\ '
-                    ),
-                    'class' => '',
-                    'default' => '1',
+                    'default' => '',
                     'list' => ''
                 )
             )
@@ -365,7 +307,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 'f2' => array(
                     'key' => 'f2',
                     'value' => 'marshung/io',
-                    'col' => '3',
+                    'col' => '1',
                     'row' => '1',
                     'style' => array(),
                     'class' => '',
