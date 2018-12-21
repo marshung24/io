@@ -230,12 +230,7 @@ class ExcelBuilder
     {
         // 設定檔物件
         $this->_config = $config;
-        // 取得資料
-        $this->_listMap = $this->_config->getList();
-        // 載入下拉選單定義 - 二者都可能有值
-        foreach ($this->_externalListMap as $k => $map) {
-            $this->_listMap[$k] = $map;
-        }
+        
         return $this;
     }
 
@@ -329,6 +324,9 @@ class ExcelBuilder
     public function getList($type = 'all')
     {
         if ($type == 'all') {
+            // 重建下拉選單定義
+            $this->_rebuildListMap();
+            
             return $this->_listMap;
         } else {
             return $this->_externalListMap;
@@ -624,7 +622,8 @@ class ExcelBuilder
      */
     public function listBuilder()
     {
-//         echo $this->_cache['buildCount']."\n";
+        // 重建下拉選單定義
+        $this->_rebuildListMap();
         
         // 記錄原工作表索引 - 取得下拉選單的目標工作表索引
         $sheet = $this->_builder->getSheet();
@@ -633,9 +632,6 @@ class ExcelBuilder
         // 取得內容列數起訖
         $rowStart = $this->offsetMap('content', 'rowStart');
         $rowEnd = $this->offsetMap('content', 'rowEnd');
-        
-//         echo '$rowStart = '.$rowStart."\n";
-//         echo '$rowEnd = '.$rowEnd."\n";
         
         // 取得內容定義資料
         $content = $this->_config->getContent();
@@ -659,14 +655,11 @@ class ExcelBuilder
             if (! isset($this->_listMap[$key])) {
                 continue;
             }
-//             var_export($this->_listMap[$key]);
-//             echo __LINE__."\n";
+            
             // ====== 將下拉選單繫結到目標工作表 ======
             // 取得資料Key對映的Excel欄位碼 - 簡易模式或傳入資料陣列時，欄位碼需計算
             $colCode = $this->_builder->getColumnMap($key);
             $colCode = empty($colCode) ? $this->_builder->num2alpha($colCount) : $colCode;
-            
-//             echo '$colCode = '.$colCode."\n";
             
             // 遍歷目標欄位的各cell - 下拉選單需一cell一cell的繫結
             for ($i = $rowStart; $i <= $rowEnd; $i ++) {
@@ -999,19 +992,19 @@ class ExcelBuilder
      * @param string $cellTitle
      *            欄位名稱，可省略
      */
-    public function listSet($sheet, $listKey, $cellLocation, $cellTitle = null)
+    protected function listSet($sheet, $listKey, $cellLocation, $cellTitle = null)
     {
         // 如果沒有初始化下拉選單結構資料表，執行它
         if (empty($this->_listAddrMap)) {
             // 將下拉選單資料建構成下拉選單結構資料表
             $this->_listAddrMapBuilder();
         }
+        
         // 參數設定 - 無標題時預設為key名稱
         $cellTitle = is_string($cellTitle) ? $cellTitle : $listKey;
         
         // 有下拉選單結構時才處理
         if (isset($this->_listAddrMap[$listKey])) {
-//             echo __LINE__."\n";
             // 對指定欄位建構下拉選單結構
             $sheet->getCell($cellLocation)
                 ->getDataValidation()
@@ -1028,5 +1021,18 @@ class ExcelBuilder
         }
         
         return $this;
+    }
+    
+    /**
+     * 重建下拉選單定義
+     */
+    protected function _rebuildListMap()
+    {
+        // 取得資料
+        $this->_listMap = $this->_config->getList();
+        // 載入下拉選單定義 - 二者都可能有值
+        foreach ($this->_externalListMap as $k => $map) {
+            $this->_listMap[$k] = $map;
+        }
     }
 }
