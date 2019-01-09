@@ -22,9 +22,14 @@ abstract class Config
      * @var array
      */
     protected $_options = array(
-        'abstractVersion' => '0.1',
+        // abstract目前版本
+        'abstractVersion' => '0.8',
+        // abstract最小可版本
+        'abstractVersionMini' => '0.8',
+        // config目前版本
         'version' => '0.1',
-        'minVersion' => '0.1',
+        // config最小可用版本
+        'versionMini' => '0.1',
         'configName' => __CLASS__,
         // Sheet Title：1.Excel的SheetTitle最多31個字 2.不可用於Sheet Title的七個字元 \ / * [ ] : ?
         'sheetName' => 'Worksheet',
@@ -520,17 +525,22 @@ abstract class Config
         $opt = false;
         if ($optionData[0] == 'ConfigContent') {
             $options = json_decode($optionData[1], 1);
-            // 版本支援
-            if ($options['version'] >= $this->_options['minVersion']) {
-                $opt = $options;
-                $this->_options = $options;
-                $this->_title = json_decode($optionData[2], 1);
-                $this->_content = json_decode($optionData[3], 1);
-                $this->_foot = json_decode($optionData[4], 1);
-                $this->_listMap = json_decode($optionData[5], 1);
-                // 設定資料範本 - 鍵值表及預設值
-                $this->templateDefined();
+            // 版本支援檢查
+            if ($options['abstractVersion'] < $this->_options['abstractVersionMini']) {
+                throw new \Exception('The template version is too old, please re-download the template!', 404001);
             }
+            if ($options['version'] < $this->_options['versionMini']) {
+                throw new \Exception('The template version is too old, please re-download the template!', 404002);
+            }
+            
+            $opt = $options;
+            $this->_options = $options;
+            $this->_title = json_decode($optionData[2], 1);
+            $this->_content = json_decode($optionData[3], 1);
+            $this->_foot = json_decode($optionData[4], 1);
+            $this->_listMap = json_decode($optionData[5], 1);
+            // 設定資料範本 - 鍵值表及預設值
+            $this->templateDefined();
         }
         
         return $opt;

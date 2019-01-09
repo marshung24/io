@@ -8,8 +8,18 @@ include_once('data.php');
 
 // IO物件建構
 $io = new \marshung\io\IO();
-// 匯入處理 - 取得匯入資料
-$dataImport = $io->import($builder = 'Excel', $fileArgu = 'fileupload');
+
+try {
+    // 匯入處理 - 取得匯入資料
+    $dataImport = $io->import($builder = 'Excel', $fileArgu = 'fileupload');
+} catch (Exception $e) {
+    echo 'Code: ' . $e->getCode() . "<br>\n";
+    echo 'Message: ' . $e->getMessage() . "<br>\n";
+    exit;
+}
+
+
+
 // 取得原資料
 $dataOrig = getData();
 

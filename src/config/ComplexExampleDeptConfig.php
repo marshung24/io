@@ -21,6 +21,8 @@ class ComplexExampleDeptConfig extends \marshung\io\config\abstracts\Config
     {
         // 設定檔版號
         $this->_options['version'] = '0.1';
+        // 設定可用最小版號
+        $this->_options['versionMini'] = '0.1';
         // 設定檔名稱
         $this->_options['configName'] = preg_replace('|Config$|', '', str_replace(array(
             __NAMESPACE__,
