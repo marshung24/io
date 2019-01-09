@@ -491,20 +491,26 @@ abstract class Config
     /**
      * 參數編碼 - 結構定義物件內容
      *
-     * 將結構定義物件內容編碼後待存入參數工作表中
+     * 1. 將結構定義物件內容編碼後待存入參數工作表中
+     * 2. 因Excel儲存格有資料上限，所以config要分開儲存，然後在讀取時重組(壓縮+切割字串)
      *
      * @return string[]
      */
     public function optionEncode()
     {
-        return array(
-            'ConfigContent',
-            json_encode($this->_options),
-            json_encode($this->_title),
-            json_encode($this->_content),
-            json_encode($this->_foot),
-            json_encode($this->_listMap)
-        );
+        $config = [
+            '_options' => $this->_options,
+            '_title' => $this->_title,
+            '_content' => $this->_content,
+            '_foot' => $this->_foot,
+            '_listMap' => $this->_listMap,
+        ];
+        
+        $optionEncode = explode("\n", trim(chunk_split(base64_encode(gzdeflate(json_encode($config))), 100)));
+        $optionEncode = array_map('trim', $optionEncode);
+        array_unshift($optionEncode, 'ConfigContent');
+        
+        return $optionEncode;
     }
 
     /**
@@ -512,6 +518,7 @@ abstract class Config
      *
      * 解析來自參數工作表中讀到的參數 (依序還原Key)
      * 為本設定檔資料時，才回傳解析後的資料，否則回傳false
+     * 因Excel儲存格有資料上限，所以config要分開儲存，然後在讀取時重組(壓縮+切割字串)
      *
      * @param array $optionData
      *            參數
@@ -519,12 +526,15 @@ abstract class Config
      */
     public function optionDecode(Array $optionData)
     {
-        // 依序還原Key
-        
         // 驗証資料
         $opt = false;
         if ($optionData[0] == 'ConfigContent') {
-            $options = json_decode($optionData[1], 1);
+            // 重組config字串
+            array_shift($optionData);
+            $optionEncode = implode('', $optionData);
+            $optionData = json_decode(gzinflate(base64_decode($optionEncode)), 1);
+            
+            $options = $optionData['_options'];
             // 版本支援檢查
             if ($options['abstractVersion'] < $this->_options['abstractVersionMini']) {
                 throw new \Exception('The template version is too old, please re-download the template!', 404001);
@@ -535,10 +545,10 @@ abstract class Config
             
             $opt = $options;
             $this->_options = $options;
-            $this->_title = json_decode($optionData[2], 1);
-            $this->_content = json_decode($optionData[3], 1);
-            $this->_foot = json_decode($optionData[4], 1);
-            $this->_listMap = json_decode($optionData[5], 1);
+            $this->_title = $optionData['_title'];
+            $this->_content = $optionData['_content'];
+            $this->_foot = $optionData['_foot'];
+            $this->_listMap = $optionData['_listMap'];
             // 設定資料範本 - 鍵值表及預設值
             $this->templateDefined();
         }
