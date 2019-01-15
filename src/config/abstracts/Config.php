@@ -19,15 +19,24 @@ abstract class Config
 {
 
     /**
+     * abstract設定參數
+     * 
+     * @var array
+     */
+    private static $_config = [
+        // abstract目前版本
+        'abstractVersion' => '0.8',
+        // abstract最小可版本
+        'abstractVersionMini' => '0.1',
+    ];
+    
+    
+    /**
      * 設定檔參數
      *
      * @var array
      */
     protected $_options = array(
-        // abstract目前版本
-        'abstractVersion' => '0.8',
-        // abstract最小可版本
-        'abstractVersionMini' => '0.1',
         // config目前版本
         'version' => '0.1',
         // config最小可用版本
@@ -167,6 +176,8 @@ abstract class Config
      */
     public function getOption($optionName = null)
     {
+        $this->_options = array_merge($this->_options, self::$_config);
+        
         if (is_null($optionName)) {
             // 未定鍵名 - 取得全部
             return $this->_options;
@@ -501,7 +512,7 @@ abstract class Config
     public function optionEncode()
     {
         $config = [
-            '_options' => $this->_options,
+            '_options' => $this->getOption(),
             '_title' => $this->_title,
             '_content' => $this->_content,
             '_foot' => $this->_foot,
@@ -555,7 +566,7 @@ abstract class Config
             }
             
             // 版本支援檢查
-            if ($_options['abstractVersion'] < $this->_options['abstractVersionMini']) {
+            if ($_options['abstractVersion'] < self::$_config['abstractVersionMini']) {
                 throw new \Exception('The template version is too old, please re-download the template!', 404001);
             }
             if ($_options['version'] < $this->_options['versionMini']) {
