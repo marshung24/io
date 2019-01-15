@@ -9,7 +9,9 @@ namespace marshung\io\config\abstracts;
  * 2. content種類資料，多列一筆定義
  * 3. 如果沒有設定title,foot定義，則不處理該種類資料
  * 4. 如果沒有設定content定義，則傳入資料不做過濾
- *
+ * 
+ * 舊版相容1，預計20190331移除
+ * 
  * @author Mars.Hung (tfaredxj@gmail.com) 2018-04-18
  *        
  */
@@ -25,7 +27,7 @@ abstract class Config
         // abstract目前版本
         'abstractVersion' => '0.8',
         // abstract最小可版本
-        'abstractVersionMini' => '0.8',
+        'abstractVersionMini' => '0.1',
         // config目前版本
         'version' => '0.1',
         // config最小可用版本
@@ -506,7 +508,7 @@ abstract class Config
             '_listMap' => $this->_listMap,
         ];
         
-        $optionEncode = explode("\n", trim(chunk_split(base64_encode(gzdeflate(json_encode($config))), 100)));
+        $optionEncode = explode("\n", trim(chunk_split(base64_encode(gzdeflate(json_encode($config))), 30000)));
         $optionEncode = array_map('trim', $optionEncode);
         array_unshift($optionEncode, 'ConfigContent');
         
@@ -529,26 +531,44 @@ abstract class Config
         // 驗証資料
         $opt = false;
         if ($optionData[0] == 'ConfigContent') {
-            // 重組config字串
+            // 去除無用資料
             array_shift($optionData);
-            $optionEncode = implode('', $optionData);
-            $optionData = json_decode(gzinflate(base64_decode($optionEncode)), 1);
+                
+            if (substr($optionData[0], 0, 1) === '{') {
+                // 舊版相容1，預計20190331移除
+                $opt = $_options = json_decode($optionData[0], 1);
+                $_title = json_decode($optionData[1], 1);
+                $_content = json_decode($optionData[2], 1);
+                $_foot = json_decode($optionData[3], 1);
+                $_listMap = json_decode($optionData[4], 1);
+            } else {
+                // 新版
+                // 重組config字串
+                $optionEncode = implode('', $optionData);
+                $optionData = json_decode(gzinflate(base64_decode($optionEncode)), 1);
+                
+                $opt = $_options = $optionData['_options'];
+                $_title = $optionData['_title'];
+                $_content = $optionData['_content'];
+                $_foot = $optionData['_foot'];
+                $_listMap = $optionData['_listMap'];
+            }
             
-            $options = $optionData['_options'];
             // 版本支援檢查
-            if ($options['abstractVersion'] < $this->_options['abstractVersionMini']) {
+            if ($_options['abstractVersion'] < $this->_options['abstractVersionMini']) {
                 throw new \Exception('The template version is too old, please re-download the template!', 404001);
             }
-            if ($options['version'] < $this->_options['versionMini']) {
+            if ($_options['version'] < $this->_options['versionMini']) {
                 throw new \Exception('The template version is too old, please re-download the template!', 404002);
             }
             
-            $opt = $options;
-            $this->_options = $options;
-            $this->_title = $optionData['_title'];
-            $this->_content = $optionData['_content'];
-            $this->_foot = $optionData['_foot'];
-            $this->_listMap = $optionData['_listMap'];
+            // 回寫設定檔
+            $this->_options = $_options;
+            $this->_title = $_title;
+            $this->_content = $_content;
+            $this->_foot = $_foot;
+            $this->_listMap = $_listMap;
+            
             // 設定資料範本 - 鍵值表及預設值
             $this->templateDefined();
         }
