@@ -404,7 +404,7 @@ class ExcelStyleBuilder
         // 取得工作表
         $sheet = $spreadsheet->getActiveSheet();
         
-        $sheet->freezePane($freezeCell);
+        $sheet->freezePane($freezeCell, $freezeCell);
     }
     
     
