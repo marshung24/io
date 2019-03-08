@@ -1,6 +1,8 @@
 匯出匯入模組
 ===
 
+[![Latest Stable Version](https://poser.pugx.org/marshung/io/v/stable)](https://packagist.org/packages/marshung/io) [![Total Downloads](https://poser.pugx.org/marshung/io/downloads)](https://packagist.org/packages/marshung/io) [![Latest Unstable Version](https://poser.pugx.org/marshung/io/v/unstable)](https://packagist.org/packages/marshung/io) [![License](https://poser.pugx.org/marshung/io/license)](https://packagist.org/packages/marshung/io) [![composer.lock](https://poser.pugx.org/marshung/io/composerlock)](https://packagist.org/packages/marshung/io)
+
 # 目錄
 - [說明](#說明)
 - [安裝](#安裝)
@@ -21,7 +23,7 @@
 為簡化匯出匯入使用法式，編寫此模組
 
 # 安裝
-```
+```shell
 $ composer require marshung/io
 ```
 
@@ -34,7 +36,7 @@ $ composer require marshung/io
 > src/config/SimpleExampleConfig.php
 
 ### 匯出
-```php=
+```php
 // 取得原始資料
 $data = [
 	        [
@@ -54,7 +56,7 @@ $data = [
 	    ];
 ```
 
-```php=
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 
@@ -62,7 +64,7 @@ $io = new \marshung\io\IO();
 $io->export($data, $config = 'SimpleExample', $builder = 'Excel', $style = 'Io');
 ```
 
-```php=
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 
@@ -70,7 +72,7 @@ $io = new \marshung\io\IO();
 $io->export($data, $config = 'ComplexExample', $builder = 'Excel', $style = 'Io');
 ```
 
-```php=
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 
@@ -91,7 +93,7 @@ $io->export($data, $config, $builder, $style);
 
 
 ### 匯入
-```
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 // 匯入處理 - 取得匯入資料
@@ -107,7 +109,7 @@ var_export($data);
 如果不需要格式、樣式等設定，只需將資料陣列純輸出，可使用空結構定義
 
 ### 匯出
-```
+```php
 // 取得原始資料
 $data = [
 	        [
@@ -133,7 +135,7 @@ $io->export($data, $config = 'Empty', $builder = 'Excel', $style = 'Io');
 ```
 
 ### 匯入
-```
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 // 匯入處理 - 取得匯入資料
@@ -151,7 +153,7 @@ var_export($data);
 > 當然，此狀況可以定義好可預期的欄位結構，然後出現額外的欄位時，使用$config的getTitle(),getContent()取出資料並改寫，再利用setTitle(),setContent()回寫，並用setList()補充對映表資料即可
 
 ### 匯出
-```
+```php
 // 取得原始資料
 $data = [
 	        [
@@ -219,7 +221,7 @@ $io->setData($data)->exportBuilder();
 ```
 
 ### 匯入
-```
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 // 匯入處理 - 取得匯入資料
@@ -237,7 +239,7 @@ var_export($data);
 > 當然，此狀況可以定義好可預期的欄位結構，然後出現額外的欄位時，使用$config的getTitle(),getContent()取出資料並改寫，再利用setTitle(),setContent()回寫，並用setList()補充對映表資料即可
 
 ### 匯出
-```
+```php
 // 取得原始資料
 $data = [
 	        [
@@ -486,7 +488,7 @@ $io->setData($data)->exportBuilder();
 ```
 
 ### 匯入
-```
+```php
 // IO物件建構
 $io = new \marshung\io\IO();
 // 匯入處理 - 取得匯入資料
@@ -570,7 +572,7 @@ var_export($data);
 ## 設定方式
 ### 設定檔
 - 自定樣式檔
-```php=
+```php
 class MyStyle extends marshung\io\style\IoStyle
 {
     public function __construct()
@@ -632,7 +634,7 @@ class MyStyle extends marshung\io\style\IoStyle
 - 設定結構構設定檔 ocnfig (節錄)
 如標題要用自定樣式集
 
-```php=
+```php
 $this->_title[] = array(
     'config' => array(
         'type' => 'title',
@@ -661,7 +663,7 @@ $this->_title[] = array(
 ```
 
 ### 手動-複雜模式-樣式
-```
+```php
 $style = new \marshung\io\style\IoStyle();
 $style->setClass(array(
             'width' => 20.71, // 儲存格欄寬
@@ -724,7 +726,7 @@ $conf = $io->getConfig()
 為因應過於特殊的樣式設定，開放樣式後處理
 
 #### 自動模式-樣式後處理
-```
+```php
 // 取得原始資料
 $data = getData('3');
 
@@ -753,7 +755,7 @@ $builder->output('my_file_name', 'file');
 
 
 #### 手動模式-樣式後處理
-```
+```php
 // 取得原始資料
 $data = getData('7');
 
@@ -794,7 +796,7 @@ $builder->output('export7', 'file');
 
 
 # 多頁工作表
-```
+```php
 // 取得原始資料
 $data = getData('10');
 $deptData = getDeptData('10');
