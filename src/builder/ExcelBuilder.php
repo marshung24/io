@@ -851,11 +851,12 @@ class ExcelBuilder
         
         // 設定資料過濾，在喂給helper時不會有多餘的資料
         $this->_config->definedFilter($content);
-        $rowData = $this->_config->getRowFromDefined($content);
         
         // 整理資料 - 依欄位設定
         $tmpData = array();
         foreach ($this->_data as $k => $row) {
+            // 處理每一資料列時，重新取得content config
+            $rowData = $this->_config->getRowFromDefined($content);
             // 重寫欄位定義的value - 保持定義格式
             foreach ($row as $key => $col) {
                 if (array_key_exists($key, $rowData)) {

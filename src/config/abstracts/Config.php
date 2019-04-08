@@ -639,7 +639,7 @@ abstract class Config
             
             // 以資料內容範本為模版過濾多餘資料 - 有設定才過濾
             if (! empty($this->_dataTemplate)) {
-                $row = array_intersect_key($row, $this->_dataTemplate);
+                $row = array_intersect_key($row + $this->_dataTemplate, $this->_dataTemplate);
             }
         }
         
