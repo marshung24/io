@@ -590,3 +590,27 @@ function export10()
     $builder->output('export-10', 'file');
 }
 
+/**
+ * 匯出 - 沒有ConfigSheet-無法匯入
+ */
+function export11()
+{
+    // 取得原始資料
+    $data = getData('10');
+    
+    // 匯出處理 - 物件注入方式
+    $config1 = new \marshung\io\config\EmptyConfig();
+    $builder = new \marshung\io\builder\ExcelBuilder();
+    $style = new \marshung\io\style\IoStyle();
+    
+    // 手動建構相關物件
+    $spreadsheet = $builder->setData($data)
+        ->setConfig($config1)
+        ->setStyle($style)
+        ->build()
+        ->output('', 'src');
+    
+    // 輸出
+    $builder->output('export-11', 'withoutconfig');
+}
+
