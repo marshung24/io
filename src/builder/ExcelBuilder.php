@@ -285,6 +285,13 @@ class ExcelBuilder
             case 'builder':
                 return $this;
                 break;
+            case 'withoutconfig':
+                $ioSpreadsheet = $this->_builder->getSpreadsheet();
+                $ioSpreadsheet->removeSheetByIndex(
+                    $ioSpreadsheet->getIndex(
+                        $ioSpreadsheet->getSheetByName('ConfigSheet')
+                    )
+                );
             case 'file':
             default:
                 // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
