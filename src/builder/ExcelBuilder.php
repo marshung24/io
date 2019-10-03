@@ -302,7 +302,8 @@ class ExcelBuilder
                 $this->_builder->setSheet(0);
                 
                 $name = ($name) ? $name : $this->_options['fileName'];
-                $this->_builder->output($name);
+                $fileFormat = ucfirst(strtolower($this->_options['fileFormat'])) ?? 'Xlsx';
+                $this->_builder->output($name, $fileFormat);
                 break;
             case 'src':
             case 'object':
