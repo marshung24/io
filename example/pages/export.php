@@ -112,12 +112,14 @@ function export5()
     ->setTitle($defined)
     ->setContent($defined);
     
-    // 建構外部對映表
+    // 建構外部對映表 - 有異常換行
     $listMap = array(
         'gender' => array(
             array(
-                'value' => '1',
-                'text' => '男'
+                'value' => '1
+                ',
+                'text' => '男
+                '
             ),
             array(
                 'value' => '0',

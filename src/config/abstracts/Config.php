@@ -47,7 +47,9 @@ abstract class Config
         // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
         'type' => 'detect',
         // 必要欄位，必需有值，提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
-        'requiredField' => array()
+        'requiredField' => array(),
+        // List Menu 不匹配時的回傳值，預設為空字串
+        'listMismatchValue' => '',
     );
 
     /**
@@ -183,7 +185,7 @@ abstract class Config
             return $this->_options;
         } else {
             // 指定鍵名
-            if (! isset($this->_options[$optionName])) {
+            if (! array_key_exists($optionName, $this->_options)) {
                 throw new \Exception('Donot have option: ' . $optionName . ' !', 404);
             }
             
@@ -658,6 +660,9 @@ abstract class Config
      */
     public function contentParser(Array & $data)
     {
+        // 取得List Menu不匹配時的回傳值
+        $listMismatchValue = $this->getOption('listMismatchValue');
+
         // 將現有對映表轉成text=>value格式存入暫存
         $this->text2ValueMapBuilder();
         // 資料範本資料量、key
@@ -676,11 +681,11 @@ abstract class Config
                 $row = array_slice($row, 0, $templateSize);
                 $row = array_combine($templateKey, $row);
                 
-                // 執行資料轉換 value <=> text - 單筆資料
-                $this->valueTextConv($key, $row);
-                
                 // issue#13 Trim all data when parsing imported data
                 $row = array_map('trim', $row);
+                
+                // 執行資料轉換 value <=> text - 單筆資料
+                $this->valueTextConv($key, $row, $listMismatchValue);
             }
         }
         
@@ -729,8 +734,9 @@ abstract class Config
      *            當次迴圈的Key值
      * @param array $row
      *            當次迴圈的內容
+     * @param array $mismatchValue List menu不匹配時回傳值
      */
-    public function valueTextConv($key, &$row)
+    public function valueTextConv($key, &$row, $mismatchValue = '')
     {
         // 遍歷資料，並轉換內容
         foreach ($row as $k => &$v) {
@@ -740,7 +746,7 @@ abstract class Config
             }
             
             // 處理資料轉換
-            $v = isset($this->_cache['valueTextMap'][$k][$v]) ? $this->_cache['valueTextMap'][$k][$v] : '';
+            $v = isset($this->_cache['valueTextMap'][$k][$v]) ? $this->_cache['valueTextMap'][$k][$v] : $mismatchValue;
         }
     }
 
@@ -755,6 +761,9 @@ abstract class Config
      */
     public function value2TextMapBuilder()
     {
+        // 下拉選單內容處理 - 去頭尾空白
+        $this->trimMap();
+
         // 初始化暫存
         $this->_cache['valueTextMap'] = array();
         
@@ -768,11 +777,28 @@ abstract class Config
      */
     public function text2ValueMapBuilder()
     {
+        // 下拉選單內容處理 - 去頭尾空白
+        $this->trimMap();
+
         // 初始化暫存
         $this->_cache['valueTextMap'] = array();
         
         foreach ($this->_listMap as $key => $map) {
             $this->_cache['valueTextMap'][$key] = array_column($map, 'value', 'text');
+        }
+    }
+
+    /**
+     * 下拉選單內容處理 - 去頭尾空白
+     *
+     * @return void
+     */
+    public function trimMap()
+    {
+        foreach ($this->_listMap as &$lists) {
+            foreach ($lists as &$list) {
+                $list = array_map('trim', $list);
+            }
         }
     }
 
