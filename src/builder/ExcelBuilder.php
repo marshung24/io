@@ -772,6 +772,16 @@ class ExcelBuilder
     }
 
     /**
+     * 取得有異常有下拉選單內容
+     *
+     * @return array
+     */
+    public function getMismatch()
+    {
+        return $this->_config->getMismatch();
+    }
+
+    /**
      * *********************************************
      * ************** Offset Function **************
      * *********************************************

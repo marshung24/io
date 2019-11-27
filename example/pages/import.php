@@ -44,6 +44,7 @@ responseHtml([
     '$diffOld' => $diffOld,
     '$dataImport' => $dataImport,
     '$dataOrig' => $dataOrig,
+    '$mismatch' => $io->getMismatch(),
 ]);
 
 

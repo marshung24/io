@@ -596,7 +596,7 @@ function export10()
 function export11()
 {
     // 取得原始資料
-    $data = getData('10');
+    $data = getData('11');
     
     // 匯出處理 - 物件注入方式
     $config1 = new \marshung\io\config\EmptyConfig();

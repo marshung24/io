@@ -25,7 +25,7 @@ abstract class Config
      */
     private static $_config = [
         // abstract目前版本
-        'abstractVersion' => '0.8',
+        'abstractVersion' => '0.9',
         // abstract最小可版本
         'abstractVersionMini' => '0.1',
     ];
@@ -81,7 +81,7 @@ abstract class Config
     protected $_listMap = array();
 
     /**
-     * 暫存用數
+     * 暫存
      *
      * @var array
      */
@@ -160,6 +160,9 @@ abstract class Config
         $this->listMapInitialize();
         // ======
         
+        // 清空暫存
+        $this->_cache = array();
+
         return true;
     }
 
@@ -740,8 +743,25 @@ abstract class Config
             }
             
             // 處理資料轉換
-            $v = isset($this->_cache['valueTextMap'][$k][$v]) ? $this->_cache['valueTextMap'][$k][$v] : '';
+            if (isset($this->_cache['valueTextMap'][$k][$v])) {
+                // 有符合的資料，資料轉換
+                $v =  $this->_cache['valueTextMap'][$k][$v];
+            } else {
+                // 無符合的資料，記錄並清空
+                $this->_cache['mismatch']["$key"][$k] = $v;
+                $v =  '';
+            }
         }
+    }
+
+    /**
+     * 取得有異常有下拉選單內容
+     *
+     * @return array
+     */
+    public function getMismatch()
+    {
+        return $this->_cache['mismatch'] ?? [];
     }
 
     /**

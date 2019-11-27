@@ -321,6 +321,16 @@ class IO
     }
 
     /**
+     * 取得有異常有下拉選單內容
+     *
+     * @return array
+     */
+    public function getMismatch()
+    {
+        return $this->_config->getMismatch();
+    }
+
+    /**
      * ***********************************************
      * ************** Building Function **************
      * ***********************************************
