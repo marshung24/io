@@ -70,7 +70,7 @@ class ExcelBuilder
     /**
      * phpSpreadsheetHelper
      *
-     * @var object \yidas\phpSpreadsheet\Helper
+     * @var object \nueip\phpSpreadsheet\Helper
      */
     protected $_builder = null;
 
@@ -124,12 +124,12 @@ class ExcelBuilder
     public function init($phpSpreadsheet = NULL)
     {
         // 初始化
-        if (is_null(\yidas\phpSpreadsheet\Helper::getSpreadsheet()) || ! is_null($phpSpreadsheet)) {
+        if (is_null(\nueip\phpSpreadsheet\Helper::getSpreadsheet()) || ! is_null($phpSpreadsheet)) {
             // 未初始化過、有傳入初始化目標 - 執行初始化
-            $this->_builder = \yidas\phpSpreadsheet\Helper::newSpreadsheet($phpSpreadsheet);
+            $this->_builder = \nueip\phpSpreadsheet\Helper::newSpreadsheet($phpSpreadsheet);
         } else {
             // 已初始化過 - 只取物件alias
-            $this->_builder = "\yidas\phpSpreadsheet\Helper";
+            $this->_builder = '\nueip\phpSpreadsheet\Helper';
         }
         
         if (! $phpSpreadsheet) {

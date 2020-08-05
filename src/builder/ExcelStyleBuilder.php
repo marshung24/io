@@ -269,8 +269,8 @@ class ExcelStyleBuilder
                 case 'width':
                     // 寬度
                     // 遍歷欄位處理寬度 - 需做文字<=>位置轉換
-                    for ($i = \yidas\phpSpreadsheet\Helper::alpha2num($cellStart); $i <= \yidas\phpSpreadsheet\Helper::alpha2num($cellEnd); $i++) {
-                        $dim = \yidas\phpSpreadsheet\Helper::num2alpha($i);
+                    for ($i = \nueip\phpSpreadsheet\Helper::alpha2num($cellStart); $i <= \nueip\phpSpreadsheet\Helper::alpha2num($cellEnd); $i++) {
+                        $dim = \nueip\phpSpreadsheet\Helper::num2alpha($i);
                         $sheet->getColumnDimension($dim)->setWidth($value);
                     }
                     break;
