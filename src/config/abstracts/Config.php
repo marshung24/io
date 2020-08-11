@@ -1,8 +1,6 @@
 <?php
 namespace marshung\io\config\abstracts;
 
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
-
 /**
  * IO Config abstract
  *
@@ -109,7 +107,7 @@ abstract class Config
         'col' => '1',
         'row' => '1',
         'skip' => '1',
-        'dataType' => DataType::TYPE_STRING,
+        'dataType' => null,
     );
 
     /**
