@@ -129,7 +129,7 @@ class ExcelBuilder
             $this->_builder = \nueip\phpSpreadsheet\Helper::newSpreadsheet($phpSpreadsheet);
         } else {
             // 已初始化過 - 只取物件alias
-            $this->_builder = '\nueip\phpSpreadsheet\Helper';
+            $this->_builder = new \nueip\phpSpreadsheet\Helper();
         }
         
         if (! $phpSpreadsheet) {
@@ -273,30 +273,34 @@ class ExcelBuilder
      * 
      * @param string $name 輸出檔名
      * @param string $format 輸出格式，優先序大於$this->_options['outputFormat'] builder, file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
+     * @param bool $withoutconfig 移除 ConfigSheet 預設false
      * @return \PhpOffice\PhpSpreadsheet\Spreadsheet | file
      */
-    public function output($name = '', $format = '')
+    public function output($name = '', $format = '', $withoutconfig = false)
     {
         // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
         $format = ($format) ? $format : $this->_options['outputFormat'];
         $format = strtolower($format);
-        
+
+        if ($withoutconfig) {
+            /**
+             * Remove ConfigSheet and output excel file
+             * Drop down menu will be not support
+             */
+            $ioSpreadsheet = $this->_builder->getSpreadsheet();
+            $ioSpreadsheet->removeSheetByIndex(
+                $ioSpreadsheet->getIndex(
+                    $ioSpreadsheet->getSheetByName('ConfigSheet')
+                )
+            );
+        }
+
         switch ($format) {
             case 'builder':
                 return $this;
                 break;
-            case 'withoutconfig':
-                /**
-                 * Remove ConfigSheet and output excel file
-                 * Drop down menu will be not support
-                 */
-                $ioSpreadsheet = $this->_builder->getSpreadsheet();
-                $ioSpreadsheet->removeSheetByIndex(
-                    $ioSpreadsheet->getIndex(
-                        $ioSpreadsheet->getSheetByName('ConfigSheet')
-                    )
-                );
-            case 'file':
+            case 'download':
+            case 'file': // This parameter is expected to be deprecated
             default:
                 // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
                 $this->_builder->setSheet(0);
@@ -317,6 +321,16 @@ class ExcelBuilder
                 $sheet = $this->_builder->getSheet($sheetName, true);
                 $this->_builder->setSheet($sheet);
                 return $this->_builder->getSpreadsheet();
+                break;
+            case 'save':
+                $this->_builder->setSheet(0);
+                
+                $name = ($name) ? $name : $this->_options['fileName'];
+                $fileFormat = isset($this->_options['fileFormat'][0])
+                    ? ucfirst(strtolower($this->_options['fileFormat']))
+                    : 'Xlsx';
+
+                $spreadsheet = $this->_builder->save($name, $fileFormat);
                 break;
         }
     }
