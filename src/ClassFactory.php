@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io;
 
 /**
@@ -29,14 +30,15 @@ class ClassFactory
      * Destruct
      */
     public function __destruct()
-    {}
+    {
+    }
 
     /**
      * ****************************************************
      * ************** Public Static Function **************
      * ****************************************************
      */
-    
+
     /**
      * 格式處理總成物件 - 建構函式 - 工廠模式
      *
@@ -81,7 +83,7 @@ class ClassFactory
      * ************** Public Static Function **************
      * ****************************************************
      */
-    
+
     /**
      * 建構函式 - 工廠模式
      *
@@ -108,7 +110,7 @@ class ClassFactory
                     break;
             }
         }
-        
+
         return new $class();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io;
 
 use marshung\io\builder\ExcelBuilder;
@@ -81,7 +82,7 @@ class IO
      *
      * @throws Exception
      */
-    public function __construct(Array $options = array())
+    public function __construct(array $options = array())
     {
         // 初始化參數
         $this->_options = array_intersect_key(array_merge($this->_options, $options), $this->_options);
@@ -91,14 +92,15 @@ class IO
      * Destruct
      */
     public function __destruct()
-    {}
+    {
+    }
 
     /**
      * *********************************************
      * ************** Public Function **************
      * *********************************************
      */
-    
+
     /**
      * 匯出處理 - 取得匯出檔
      *
@@ -115,16 +117,16 @@ class IO
     {
         // 建立io物件
         $this->setBuilder($builder);
-        
+
         // 載入資料
         $this->setData($data);
-        
+
         // 載入定義檔
         $this->setConfig($config);
-        
+
         // 載入Style定義
         $this->setStyle($style);
-        
+
         // 匯出建構並輸出
         return $this->exportBuilder();
     }
@@ -146,13 +148,13 @@ class IO
     {
         // 建立io物件
         $this->setBuilder($builder);
-        
+
         // 載入定義檔 - 結構定義資料會在建構匯出時存入檔案，並於匯入時取出解析，所以只與支援版本有關，此處直接使用Empty即可
         $this->setConfig($config = 'Empty');
-        
+
         // 取得上傳資料 - 將上傳檔載入IO建構物件
         $this->uploadFile2Builder($fileArgu);
-        
+
         // 解析資料並回傳
         return $this->importParser();
     }
@@ -173,7 +175,7 @@ class IO
         } else {
             $this->_options[$optionName] = $option;
         }
-        
+
         return $this;
     }
 
@@ -202,7 +204,7 @@ class IO
         } else {
             $this->_config = \marshung\io\ClassFactory::getConfig($config);
         }
-        
+
         return $this;
     }
 
@@ -219,7 +221,7 @@ class IO
         } else {
             $this->_style = \marshung\io\ClassFactory::getStyle($style);
         }
-        
+
         return $this;
     }
 
@@ -232,14 +234,14 @@ class IO
      *            鍵名
      * @return \marshung\io\config\abstracts\Config
      */
-    public function setList(Array $mapData, $key = null)
+    public function setList(array $mapData, $key = null)
     {
         if (is_null($key)) {
             $this->_listMap = $mapData;
         } else {
             $this->_listMap[$key] = $mapData;
         }
-        
+
         return $this;
     }
 
@@ -256,7 +258,7 @@ class IO
         } else {
             $this->_builder = \marshung\io\ClassFactory::getBuilder($builder);
         }
-        
+
         return $this;
     }
 
@@ -335,7 +337,7 @@ class IO
      * ************** Building Function **************
      * ***********************************************
      */
-    
+
     /**
      * 匯出建構並輸出
      * 
@@ -355,24 +357,24 @@ class IO
         if (empty($this->_style)) {
             $this->setStyle();
         }
-        
+
         // 載入參數
         foreach ($this->_options as $key => $value) {
             $this->_builder->setOption($value, $key);
         }
-        
+
         // 載入資料
         $this->_builder->setData($this->_data);
         // 載入結構定義
         $this->_builder->setConfig($this->_config);
         // 載入樣式定義
         $this->_builder->setStyle($this->_style);
-        
+
         // 載入下拉選單定義 - 額外定義資料 - _config中可能已有值，不可直接覆蓋
         foreach ($this->_listMap as $keyName => $listDEfined) {
             $this->_config->setList($listDEfined, $keyName);
         }
-        
+
         // 建構資料 & 輸出
         return $this->_builder->build()->output($fileName, $format);
     }
@@ -386,15 +388,15 @@ class IO
     {
         // 載入參數
         $this->_builder->setOption($this->_options);
-        
+
         // 載入結構定義
         $this->_builder->setConfig($this->_config);
-        
+
         // 載入下拉選單定義 - 額外定義資料 - _config中可能已有值，不可直接覆蓋
         foreach ($this->_listMap as $keyName => $listDEfined) {
             $this->_config->setList($listDEfined, $keyName);
         }
-        
+
         // 建構資料 & 輸出
         return $this->_builder->parse()->getData();
     }
@@ -404,7 +406,7 @@ class IO
      * ************** Private Function **************
      * **********************************************
      */
-    
+
     /**
      * 上傳檔處理 - 將上傳檔載入IO建構物件
      *
@@ -417,13 +419,13 @@ class IO
     protected function uploadFile2Builder($fileArgu = 'fileupload')
     {
         // 錯誤檢查
-        if (! isset($_FILES[$fileArgu])) {
+        if (!isset($_FILES[$fileArgu])) {
             throw new \Exception('File upload failed !', 400);
         }
-        
+
         // 處理上傳檔案 - 上傳檔案只讀取一次資料就棄用，應該不需要move_uploaded_file (2018-05-02)
         $this->_builder->loadFile($_FILES[$fileArgu]['tmp_name'], $_FILES[$fileArgu]['name']);
-        
+
         return $this;
     }
 }

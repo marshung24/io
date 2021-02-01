@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io\builder;
 
 /**
@@ -37,7 +38,7 @@ class ExcelBuilder
      * @var array
      */
     protected $_cache = [];
-    
+
     /**
      * 資料
      *
@@ -107,14 +108,15 @@ class ExcelBuilder
      * Destruct
      */
     public function __destruct()
-    {}
+    {
+    }
 
     /**
      * *********************************************
      * ************** Public Function **************
      * *********************************************
      */
-    
+
     /**
      * 初始化
      *
@@ -124,21 +126,21 @@ class ExcelBuilder
     public function init($phpSpreadsheet = NULL)
     {
         // 初始化
-        if (is_null(\nueip\phpSpreadsheet\Helper::getSpreadsheet()) || ! is_null($phpSpreadsheet)) {
+        if (is_null(\nueip\phpSpreadsheet\Helper::getSpreadsheet()) || !is_null($phpSpreadsheet)) {
             // 未初始化過、有傳入初始化目標 - 執行初始化
             $this->_builder = \nueip\phpSpreadsheet\Helper::newSpreadsheet($phpSpreadsheet);
         } else {
             // 已初始化過 - 只取物件alias
             $this->_builder = '\nueip\phpSpreadsheet\Helper';
         }
-        
-        if (! $phpSpreadsheet) {
+
+        if (!$phpSpreadsheet) {
             // 新建Excel時才設定
             $this->_builder->getSpreadsheet()
                 ->getProperties()
                 ->setTitle("Office 2007 XLSX Document");
         }
-        
+
         return $this;
     }
 
@@ -157,15 +159,15 @@ class ExcelBuilder
         // 取得檔案名稱、副檔名
         $fileName = substr($fileFullName, 0, strrpos($fileFullName, '.'));
         $fileExt = strtolower(substr($fileFullName, strrpos($fileFullName, '.') + 1, strlen($fileFullName) - strlen($fileName) + 1));
-        
+
         // 檔案檢查 - 副檔名
-        if (! in_array($fileExt, array(
+        if (!in_array($fileExt, array(
             'xlsx',
             'xls'
         ))) {
             throw new \Exception('Wrong file format!', 400);
         }
-        
+
         // 使用資料讀取模式取得$spreadsheet物件
         /**
          * Identify the type of $inputFileName *
@@ -183,7 +185,7 @@ class ExcelBuilder
          * Load $inputFileName to a Spreadsheet Object *
          */
         $spreadsheet = $reader->load($upFilePath);
-        
+
         // 將$spreadsheet物件載入Helper
         $this->init($spreadsheet);
     }
@@ -204,7 +206,7 @@ class ExcelBuilder
         } else {
             $this->_options[$optionName] = $option;
         }
-        
+
         return $this;
     }
 
@@ -216,7 +218,7 @@ class ExcelBuilder
      */
     public function setData($data)
     {
-        $this->_data = empty($data) ? [null]: (array)$data;
+        $this->_data = empty($data) ? [null] : (array)$data;
         return $this;
     }
 
@@ -230,7 +232,7 @@ class ExcelBuilder
     {
         // 設定檔物件
         $this->_config = $config;
-        
+
         return $this;
     }
 
@@ -255,14 +257,14 @@ class ExcelBuilder
      *            鍵名
      * @return \marshung\io\config\abstracts\Config
      */
-    public function setList(Array $mapData, $key = null)
+    public function setList(array $mapData, $key = null)
     {
         if (is_null($key)) {
-            $this->_externalListMap= $mapData;
+            $this->_externalListMap = $mapData;
         } else {
             $this->_externalListMap[$key] = $mapData;
         }
-        
+
         return $this;
     }
 
@@ -280,7 +282,7 @@ class ExcelBuilder
         // Output format: file, phpSpreadsheet(src/object/sheet/spreadsheet/phpspreadsheet)
         $format = ($format) ? $format : $this->_options['outputFormat'];
         $format = strtolower($format);
-        
+
         switch ($format) {
             case 'builder':
                 return $this;
@@ -300,7 +302,7 @@ class ExcelBuilder
             default:
                 // Sheet states:SHEETSTATE_VERYHIDDEN will be ignore
                 $this->_builder->setSheet(0);
-                
+
                 $name = ($name) ? $name : $this->_options['fileName'];
                 $fileFormat = isset($this->_options['fileFormat'][0])
                     ? ucfirst(strtolower($this->_options['fileFormat']))
@@ -340,7 +342,7 @@ class ExcelBuilder
         if ($type == 'all') {
             // 重建下拉選單定義
             $this->_rebuildListMap();
-            
+
             return $this->_listMap;
         } else {
             return $this->_externalListMap;
@@ -352,7 +354,7 @@ class ExcelBuilder
      * ************** Building Function **************
      * ***********************************************
      */
-    
+
     /**
      * 建構資料
      *
@@ -363,25 +365,25 @@ class ExcelBuilder
         $this->_cache['buildCount'] = isset($this->_cache['buildCount']) ? $this->_cache['buildCount'] + 1 : 1;
         $this->_offsetMap = [];
         $this->_listAddrMap = [];
-        
+
         // 參數工作表設定
         $this->optionBuilder();
-        
+
         // 標題建構
         $this->titleBuilder();
-        
+
         // 內容建構
         $this->contentBuilder();
-        
+
         // 結尾建構
         $this->footBuilder();
-        
+
         // 樣式建構Style
         $this->styleBuilder();
-        
+
         // 下拉選單建構
         $this->listBuilder();
-        
+
         return $this;
     }
 
@@ -403,7 +405,7 @@ class ExcelBuilder
             $this->_builder->setSheet($configSheet);
             $this->_builder->setRowOffset($configSheet->getHighestRow());
         }
-        
+
         // ====== 參數工作表格式 ======
         // 保護工作表
         $configSheet->getProtection()->setSheet(true);
@@ -418,12 +420,12 @@ class ExcelBuilder
             ->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
         // ======
-        
+
         // ====== 參數工作表內容 - 基本參數 ======
         if (is_object($this->_config)) {
             // 參數編碼 - 結構定義物件內容
             $options = $this->_config->optionEncode();
-            
+
             // 基本參數設定 - 第一列:設定檔參數、第二列:建構函式參數
             $this->_builder->addRows([
                 $options,
@@ -434,7 +436,7 @@ class ExcelBuilder
             ]);
         }
         // ======
-        
+
         return $this;
     }
 
@@ -445,36 +447,36 @@ class ExcelBuilder
     {
         // 取得設定檔參數-工作表名稱
         $sheetName = $this->_config->getOption('sheetName');
-        
+
         // 取得工作表
         $sheet = $this->_builder->getSheet($sheetName, true);
-        
+
         // 起始座標
         $colStart = 'A';
         $rowStart = '1';
         // 結束座標 - 初始化
         $colEnd = 'A';
         $rowEnd = '0';
-        
+
         // 建構標題資料
         foreach ($this->_config->getTitle() as $key => $tRow) {
             // 設定資料過濾，在喂給helper時不會有多餘的資料
             $this->_config->definedFilter($tRow);
             $rowData = $this->_config->getRowFromDefined($tRow);
-            
+
             // 寫入標題資料至excel
             $this->_builder->addRows([
                 $rowData
             ]);
-            
+
             // 取得本次結束座標
             $colEnd = $this->_builder->getSheet()->getHighestColumn();
             $rowEnd = $this->_builder->getSheet()->getHighestRow();
-            
+
             // 座標記錄 - 每個子標題 - 樣式
             $this->offsetMapSet('title', $tRow, $colStart, $rowEnd, $colEnd, $rowEnd);
         }
-        
+
         // 座標記錄 - 全標題
         if ($rowEnd) {
             $this->offsetMapSet('title', 'all', $colStart, $rowStart, $colEnd, $rowEnd);
@@ -488,27 +490,27 @@ class ExcelBuilder
     {
         // 取得定義資料
         $content = $this->_config->getContent();
-        
-        if (! empty($content)) {
+
+        if (!empty($content)) {
             // 重整內容資料
             $this->_rebuildContent();
         }
-        
+
         // 起始座標
         $colStart = 'A';
         $rowStart = sizeof($this->_config->getTitle());
-        $rowStart ++;
+        $rowStart++;
         // 結束座標 - 初始化
         $colEnd = 'A';
         $rowEnd = '0';
-        
+
         // 建構內容資料
         $this->_builder->addRows($this->_data);
-        
+
         // 結束座標
         $colEnd = $this->_builder->getSheet()->getHighestColumn();
         $rowEnd = $this->_builder->getSheet()->getHighestRow();
-        
+
         if ($rowEnd) {
             // 座標記錄 - 全內容 - 樣式
             $this->offsetMapSet('content', $content, $colStart, $rowStart, $colEnd, $rowEnd);
@@ -525,39 +527,39 @@ class ExcelBuilder
         // 起始座標
         $colStart = 'A';
         $rowStart = $this->_builder->getSheet()->getHighestRow();
-        $rowStart ++;
+        $rowStart++;
         // 結束座標 - 初始化
         $colEnd = 'A';
         $rowEnd = '0';
-        
+
         // 建構標題資料
         foreach ($this->_config->getFoot() as $key => $fRow) {
             // 設定資料過濾，在喂給helper時不會有多餘的資料
             $this->_config->definedFilter($fRow);
             $rowData = $this->_config->getRowFromDefined($fRow);
-            
+
             // 寫入標題資料至excel
             $this->_builder->addRows([
                 $rowData
             ]);
-            
+
             // 取得本次結束座標
             $colEnd = $this->_builder->getSheet()->getHighestColumn();
             $rowEnd = $this->_builder->getSheet()->getHighestRow();
-            
+
             // 座標記錄 - 每個子結尾 - 樣式
             $this->offsetMapSet('foot', $fRow, $colStart, $rowEnd, $colEnd, $rowEnd);
         }
-        
+
         // 座標記錄 - 全結尾
         if ($rowEnd) {
             $this->offsetMapSet('foot', 'all', $colStart, $rowStart, $colEnd, $rowEnd);
         }
-        
+
         // 結束座標
         $colEnd = $this->_builder->getSheet()->getHighestColumn();
         $rowEnd = $this->_builder->getSheet()->getHighestRow();
-        
+
         // 座標記錄 - 全工作表
         if ($rowEnd) {
             $this->offsetMapSet('sheet', 'all', $colStart, '1', $colEnd, $rowEnd);
@@ -573,28 +575,28 @@ class ExcelBuilder
         $spreadsheet = $this->_builder->getSpreadsheet();
         // 取得工作表
         $sheet = $this->_builder->getSheet();
-        
+
         // ====== 建立樣式-類型 ======
         // 建立Excel樣式 - 預設樣式
         $defaultStyle = $this->_style->getDefault();
         \marshung\io\builder\ExcelStyleBuilder::setExcelDefaultStyle($defaultStyle, $spreadsheet);
-        
+
         // 建立Excel樣式 - 標題樣式
         $titleStyle = $this->_style->getTitle();
         $titleRange = $this->offsetMap('title');
         \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($titleStyle, $spreadsheet, $titleRange);
-        
+
         // 建立Excel樣式 - 內容樣式
         $contentStyle = $this->_style->getContent();
         $contentRange = $this->offsetMap('content');
         \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($contentStyle, $spreadsheet, $contentRange);
-        
+
         // 建立Excel樣式 - 結尾樣式
         $footStyle = $this->_style->getFoot();
         $footRange = $this->offsetMap('foot');
         \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($footStyle, $spreadsheet, $footRange);
         // ======
-        
+
         // ====== 建立樣式-從Config ======
         // === 標題設定 ===
         $config = $this->_config->getTitle();
@@ -602,12 +604,12 @@ class ExcelBuilder
             // 樣式建構Style - 從Config
             $this->_configStyleBuilder($conf, $spreadsheet);
         }
-        
+
         // === 內容設定 ===
         $config = $this->_config->getContent();
         // 樣式建構Style - 從Config
         $this->_configStyleBuilder($config, $spreadsheet);
-        
+
         // === 結尾設定 ===
         $config = $this->_config->getFoot();
         foreach ($config as $idx => $conf) {
@@ -615,7 +617,7 @@ class ExcelBuilder
             $this->_configStyleBuilder($conf, $spreadsheet);
         }
         // ======
-        
+
         // ====== 處理凍結欄位 ======
         // 取得樣式 - 凍結欄位
         $freezeCol = $this->_style->getFreeze();
@@ -638,18 +640,18 @@ class ExcelBuilder
     {
         // 重建下拉選單定義
         $this->_rebuildListMap();
-        
+
         // 記錄原工作表索引 - 取得下拉選單的目標工作表索引
         $sheet = $this->_builder->getSheet();
-        
+
         // ========== 建構下拉選單 ==========
         // 取得內容列數起訖
         $rowStart = $this->offsetMap('content', 'rowStart');
         $rowEnd = $this->offsetMap('content', 'rowEnd');
-        
+
         // 取得內容定義資料
         $content = $this->_config->getContent();
-        if (! empty($content)) {
+        if (!empty($content)) {
             // 有內容定義 - 取得欄位定義
             $cDefined = $this->_config->getRowFromDefined($content);
         } else {
@@ -659,31 +661,31 @@ class ExcelBuilder
         if (is_array(current($cDefined))) {
             $cDefined = array_column($cDefined, 'value', 'key');
         }
-        
+
         // 遍歷資料範本 - 建構下拉選單值的資料表，並繫結到目標欄位
         $colCount = 0;
         foreach ($cDefined as $key => $colTitle) {
             // 欄位計算
-            $colCount ++;
+            $colCount++;
             // 跳過不處理的欄位
-            if (! isset($this->_listMap[$key])) {
+            if (!isset($this->_listMap[$key])) {
                 continue;
             }
-            
+
             // ====== 將下拉選單繫結到目標工作表 ======
             // 取得資料Key對映的Excel欄位碼 - 簡易模式或傳入資料陣列時，欄位碼需計算
             $colCode = $this->_builder->getColumnMap($key);
             $colCode = empty($colCode) ? $this->_builder->num2alpha($colCount) : $colCode;
-            
+
             // 遍歷目標欄位的各cell - 下拉選單需一cell一cell的繫結
-            for ($i = $rowStart; $i <= $rowEnd; $i ++) {
+            for ($i = $rowStart; $i <= $rowEnd; $i++) {
                 // 對指定欄位建構下拉選單結構
                 $this->listSet($sheet, $key, $colCode . $i, $colTitle);
             }
             // ======
         }
         // ==========
-        
+
         return $this;
     }
 
@@ -692,7 +694,7 @@ class ExcelBuilder
      * ************** Parse Function **************
      * ********************************************
      */
-    
+
     /**
      * 解析匯入資料並回傳
      *
@@ -706,24 +708,24 @@ class ExcelBuilder
         if (is_null($sheet)) {
             throw new \Exception('參數表錯誤', 404);
         }
-        
+
         // 取得結構設定參數
         $optionData = $this->_builder->getRow();
-        
+
         // 參數解析
         $config = $this->_config->optionDecode($optionData);
-        
+
         if ($config === false) {
             throw new \Exception('參數表錯誤', 404);
         }
-        
+
         // 取得標題設定
         $title = $this->_config->getTitle();
         $titleRowNumber = sizeof($title);
         // 取得結尾設定
         $foot = $this->_config->getFoot();
         $footRowNumber = sizeof($foot);
-        
+
         // 取得原始資料
         $data = array();
         $sheet = $this->_builder->getSheet($config['sheetName']);
@@ -733,13 +735,13 @@ class ExcelBuilder
         while ($row = $this->_builder->getRow()) {
             // 略過不要的資料 - 標題
             if ($titleRowNumber > 0) {
-                $titleRowNumber --;
+                $titleRowNumber--;
                 continue;
             }
-            
+
             // 匯入資料驗証 - 必要欄位驗証 - issue#12 連續三組必要欄位都為空時，才跳出
-            if (! $this->_config->contentValidate($row)) {
-                $rowError ++;
+            if (!$this->_config->contentValidate($row)) {
+                $rowError++;
                 // 驗証失敗
                 if ($rowError >= 3) {
                     // 3 or more times, break
@@ -751,23 +753,23 @@ class ExcelBuilder
             } else {
                 $rowError = 0;
             }
-            
+
             // 取得資料
             $data[] = $row;
         }
-        
+
         // 去除結尾資料
         if ($footRowNumber) {
             $length = sizeof($data) - $footRowNumber;
             $data = array_slice($data, 0, $length);
         }
-        
+
         // 匯入資料解析
         $this->_config->contentParser($data);
-        
+
         // 回寫資料
         $this->_data = $data;
-        
+
         return $this;
     }
 
@@ -786,7 +788,7 @@ class ExcelBuilder
      * ************** Offset Function **************
      * *********************************************
      */
-    
+
     /**
      * 取得座標記錄內容
      *
@@ -830,7 +832,7 @@ class ExcelBuilder
         if ($rowEnd < $rowStart || $colEnd < $colStart) {
             return false;
         }
-        
+
         // 建構座標內容
         $conf = array(
             'configName' => '',
@@ -840,7 +842,7 @@ class ExcelBuilder
             'rowEnd' => $rowEnd,
             'range' => $colStart . $rowStart . ':' . $colEnd . $rowEnd
         );
-        
+
         // 設定座標記錄
         if (is_string($config)) {
             // 全域定義種類
@@ -861,7 +863,7 @@ class ExcelBuilder
      * ************** Private Function **************
      * **********************************************
      */
-    
+
     /**
      * 重整內容資料
      */
@@ -869,13 +871,13 @@ class ExcelBuilder
     {
         // 內容整併 - 以資料內容範本為模版合併資料 - 欄位、排序、預設值、資料轉換
         $this->_config->contentRefactor($this->_data)->contentFilter($this->_data);
-        
+
         // 取得定義資料
         $content = $this->_config->getContent();
-        
+
         // 設定資料過濾，在喂給helper時不會有多餘的資料
         $this->_config->definedFilter($content);
-        
+
         // 整理資料 - 依欄位設定
         $tmpData = array();
         foreach ($this->_data as $k => $row) {
@@ -895,10 +897,10 @@ class ExcelBuilder
             }
             $tmpData[$k] = $rowData;
         }
-        
+
         // 回寫
         $this->_data = $tmpData;
-        
+
         return $this->_data;
     }
 
@@ -908,29 +910,29 @@ class ExcelBuilder
     protected function _configStyleBuilder($config, &$spreadsheet)
     {
         // 簡易模式，不處理
-        if (! isset($config['config'])) {
+        if (!isset($config['config'])) {
             return $this;
         }
-        
+
         // 設定資料類型
         $blockType = $config['config']['type'];
-        
+
         // === 全設定區塊 ===
         // 取得儲存格範圍
         $blockName = $config['config']['name'];
         $blockRange = $this->offsetMap($blockType, 'range', $blockName);
-        
+
         // 取得樣式資料
         $style = $config['config']['style'];
         $className = $config['config']['class'];
         $class = $this->_style->getClass($className);
-        
+
         // 設定style樣式
         \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($style, $spreadsheet, $blockRange);
-        
+
         // 設定Class樣式
         \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($class, $spreadsheet, $blockRange);
-        
+
         // === 欄位 ===
         foreach ($config['defined'] as $idx => $conf) {
             // 取得儲存格範圍
@@ -941,15 +943,15 @@ class ExcelBuilder
             $rowStart = $this->offsetMap($blockType, 'rowStart', $blockName);
             $rowEnd = $this->offsetMap($blockType, 'rowEnd', $blockName);
             $blockRange = $colCode . $rowStart . ':' . $colCode . $rowEnd;
-            
+
             // 取得樣式資料
             $style = isset($conf['style']) ? $conf['style'] : array();
             $className = isset($conf['class']) ? $conf['class'] : '';
             $class = $this->_style->getClass($className);
-            
+
             // 設定style樣式
             \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($style, $spreadsheet, $blockRange);
-            
+
             // 設定Class樣式
             \marshung\io\builder\ExcelStyleBuilder::setExcelRangeStyle($class, $spreadsheet, $blockRange);
         }
@@ -964,17 +966,17 @@ class ExcelBuilder
         $origSheet = $this->_builder->getSheet();
         // 取得參數工作表
         $configSheet = $this->_builder->getSheet('ConfigSheet');
-        
-        if (! $configSheet) {
+
+        if (!$configSheet) {
             // 找不到參數工作表 - 參數工作表設定
             $this->optionBuilder($inBuilder = false);
             // 取得參數工作表
             $configSheet = $this->_builder->getSheet('ConfigSheet');
         }
-        
+
         // 取得參數工作表目前列數
         $csRow = $configSheet->getHighestRow();
-        
+
         // ====== 將下拉選單項目寫到參數工作表 ======
         foreach ($this->_listMap as $key => $listDef) {
             // 取得下拉選單項目定義資料
@@ -987,21 +989,21 @@ class ExcelBuilder
             $this->_builder->setSheet($configSheet)
                 ->setRowOffset($csRow)
                 ->addRows([
-                $listItem
-            ]);
+                    $listItem
+                ]);
             // 更新參數工作列數
             $csRow = $configSheet->getHighestRow();
             // 計算定義佔用的欄數，並取得該欄的代碼
             $lastColCode = $this->_builder->num2alpha(sizeof($listItem));
-            
+
             // 建立下拉選單結構位址
             $this->_listAddrMap[$key] = $configSheet->getTitle() . '!$B$' . $csRow . ':$' . $lastColCode . '$' . $csRow;
         }
         // ======
-        
+
         // 回原工作表
         $this->_builder->setSheet($origSheet);
-        
+
         return $this;
     }
 
@@ -1024,10 +1026,10 @@ class ExcelBuilder
             // 將下拉選單資料建構成下拉選單結構資料表
             $this->_listAddrMapBuilder();
         }
-        
+
         // 參數設定 - 無標題時預設為key名稱
         $cellTitle = is_string($cellTitle) ? $cellTitle : $listKey;
-        
+
         // 有下拉選單結構時才處理
         if (isset($this->_listAddrMap[$listKey])) {
             // 對指定欄位建構下拉選單結構
@@ -1044,10 +1046,10 @@ class ExcelBuilder
                 ->setPromptTitle($cellTitle)
                 ->setFormula1($this->_listAddrMap[$listKey]);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 重建下拉選單定義
      */

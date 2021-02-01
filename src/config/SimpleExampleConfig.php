@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io\config;
 
 /**
@@ -33,7 +34,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'simple';
         $this->_options['requiredField'] = array('u_no');
-        
+
         // 初始化
         $this->initialize();
     }
@@ -43,7 +44,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
      * ************** Content Process Function **************
      * ******************************************************
      */
-    
+
     /**
      * 內容整併處理時執行 - 迴圈內自定步驟
      *
@@ -53,14 +54,15 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
      *            當次迴圈的內容
      */
     protected function eachRefactor($key, &$row)
-    {}
+    {
+    }
 
     /**
      * **************************************************
      * ************** Map Builder Function **************
      * **************************************************
      */
-    
+
     /**
      * 初始化對映表
      */
@@ -93,7 +95,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
      * ************** Defined Function **************
      * **********************************************
      */
-    
+
     /**
      * 標題定義函式
      *
@@ -111,7 +113,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
             '性別',
             '備註'
         );
-        
+
         // 設定標題定義
         $this->setTitle($title);
     }
@@ -133,7 +135,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
             'gender' => '1',
             'text' => ''
         );
-        
+
         // 設定內容定義
         $this->setContent($content);
     }
@@ -149,7 +151,7 @@ class SimpleExampleConfig extends \marshung\io\config\abstracts\Config
             '結尾定義列',
             'marshung/io',
         );
-        
+
         // 設定結尾定義
         $this->setFoot($foot);
     }

@@ -1,7 +1,9 @@
 <?php
+
 /**
  * 參考 Attendance_record_model.php
  */
+
 namespace marshung\io\style;
 
 /**
@@ -59,14 +61,15 @@ class IoStyle
      * Destruct
      */
     public function __destruct()
-    {}
+    {
+    }
 
     /**
      * *********************************************
      * ************** Public Function **************
      * *********************************************
      */
-    
+
     /**
      * 取得樣式 - 預設
      *
@@ -145,10 +148,10 @@ class IoStyle
      *            樣式集名稱
      * @return \marshung\io\style\IoStyle
      */
-    public function setClass(Array $class, String $className)
+    public function setClass(array $class, String $className)
     {
         $this->_classMap[$className] = $class;
-        
+
         return $this;
     }
 
@@ -162,7 +165,7 @@ class IoStyle
     public function setFreeze($columnCode)
     {
         $this->_freeze = strtoupper(preg_replace('/[^a-zA-Z]/', '', $columnCode));
-        
+
         return $this;
     }
 
@@ -171,7 +174,7 @@ class IoStyle
      * ************** Private Function **************
      * **********************************************
      */
-    
+
     /**
      * 初始化 - 預設樣式
      * 'width' => 20.71,//儲存格欄寬
@@ -207,7 +210,7 @@ class IoStyle
         // 預設-全域樣式集
         $this->_classMap['default'] = array(
             'width' => 20.71, // 儲存格欄寬
-            'height' => - 1, // 儲存格欄高(-1為自動高度)
+            'height' => -1, // 儲存格欄高(-1為自動高度)
             'format' => 'text', // 儲存格格式-文字
             'wraptext' => true, // 儲存格自動換行
             'font-name' => '微軟正黑體', // 字體字型
@@ -217,7 +220,7 @@ class IoStyle
             'border-all-style' => 'thin', // 欄線樣式-全部
             'border-all-color' => 'FF9F9FA0' // 欄線顏色-全部
         );
-        
+
         // 預設-標題樣式集
         $this->_classMap['title'] = array(
             // 'height' => 28.5,//儲存格欄高
@@ -229,7 +232,7 @@ class IoStyle
             'border-outline-style' => 'thick', // 外圈欄線樣式
             'background-color' => 'FF0094D8' // 儲存格背景顏色
         );
-        
+
         // 預設-內容樣式集
         $this->_classMap['content'] = array(
             'border-all-color' => 'FFAAAAAA', // 欄線顏色-全部
@@ -237,7 +240,7 @@ class IoStyle
             // 'row-odd-background-color' => 'F7F7F7',//內容奇數列背景顏色
             // 'row-even-background-color' => 'white'//內容偶數列背景顏色
         );
-        
+
         // 預設-結尾樣式集
         $this->_classMap['foot'] = array(
             'font-color' => 'black', // 字體顏色
@@ -246,7 +249,7 @@ class IoStyle
             'border-outline-style' => 'thin' // 外圈欄線樣式
             // 'align-horizontal' => 'left' // 水平對齊
         );
-        
+
         // 預設-範例樣式集
         $this->_classMap['example'] = array(
             'font-color' => 'black', // 字體顏色

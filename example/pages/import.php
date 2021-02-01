@@ -87,7 +87,7 @@ function diffRecursive($Comparative, $Comparison)
 function responseJson(array $data)
 {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+    echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }
 
 /**
@@ -98,7 +98,7 @@ function responseHtml(array $data)
 {
     header('Content-Type: text/html; charset=utf-8');
     foreach ($data as $key => $value) {
-        $jsonEncodeVal = json_encode($value, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+        $jsonEncodeVal = json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         echo "<pre style=\"float: left;\"> {$key} = {$jsonEncodeVal} </pre>";
     }
 }

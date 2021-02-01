@@ -540,70 +540,70 @@ var_export($mismatch);
 # 樣式
 ## 可用清單
 ### 顏色
-| 代碼 | 色碼 | 顏色
-|:----:|:---:|:----:|
-| black | FF000000 | 黑色
-| blue | FF0000FF | 藍色
-| darkblue | FF000080 | 深藍
-| darkgreen | FF008000 | 深綠
-| darkred | FF800000 | 深紅
-| darkyellow | FF808000 | 深黃
-| green | FF00FF00 | 綠
-| red | FFFF0000 | 紅
-| white | FFFFFFFF | 白
-| yellow | FFFFFF00 | 黃
+|    代碼    |   色碼   | 顏色  |
+| :--------: | :------: | :---: |
+|   black    | FF000000 | 黑色  |
+|    blue    | FF0000FF | 藍色  |
+|  darkblue  | FF000080 | 深藍  |
+| darkgreen  | FF008000 | 深綠  |
+|  darkred   | FF800000 | 深紅  |
+| darkyellow | FF808000 | 深黃  |
+|   green    | FF00FF00 |  綠   |
+|    red     | FFFF0000 |  紅   |
+|   white    | FFFFFFFF |  白   |
+|   yellow   | FFFFFF00 |  黃   |
 
 ### 水平對齊
-| 代碼 | 方式
-|:----:|:---:|
-| center | 置中
-| centercontinuous | |
-| general | 一般
-| justify | 左右貼齊
-| left | 靠左
-| right | 靠右
+|       代碼       |   方式   |
+| :--------------: | :------: |
+|      center      |   置中   |
+| centercontinuous |          |
+|     general      |   一般   |
+|     justify      | 左右貼齊 |
+|       left       |   靠左   |
+|      right       |   靠右   |
 
 
 ### 垂直對齊
-| 代碼 | 方式
-|:----:|:---:|
-| bottom | 置底
-| center | 置中
-| middle | 置中
-| justify | |
-| top | 置頂
+|  代碼   | 方式  |
+| :-----: | :---: |
+| bottom  | 置底  |
+| center  | 置中  |
+| middle  | 置中  |
+| justify |       |
+|   top   | 置頂  |
 
 ### 邊線
-| 代碼 | 說明
-|:----:|:---:|
-| dashdot | |
-| dashdotdot | |
-| dashed | |
-| dotted | |
-| double | |
-| hair | |
-| medium | |
-| mediumdashdot | |
-| mediumdashdotdot | |
-| mediumdashed | |
-| none | |
-| slantdashdot | |
-| thick | |
-| thin | |
+|       代碼       | 說明  |
+| :--------------: | :---: |
+|     dashdot      |       |
+|    dashdotdot    |       |
+|      dashed      |       |
+|      dotted      |       |
+|      double      |       |
+|       hair       |       |
+|      medium      |       |
+|  mediumdashdot   |       |
+| mediumdashdotdot |       |
+|   mediumdashed   |       |
+|       none       |       |
+|   slantdashdot   |       |
+|      thick       |       |
+|       thin       |       |
 
 
 ### 儲存格格式
-| 代碼 | 說明 | 備註
-|:----:|:---:|:---:|
-| general | 通用格式 |
-| txt | 文字 |
-| text | 文字 |
-| string | 文字 |
-| number | 數字 |
+|   代碼    |      說明      |                         備註                          |
+| :-------: | :------------: | :---------------------------------------------------: |
+|  general  |    通用格式    |
+|    txt    |      文字      |
+|   text    |      文字      |
+|  string   |      文字      |
+|  number   |      數字      |
 | number_00 | 數字(小數二位) |
-| date | 日期 | 可配合config的$_options['dateFormat']欄位定義日期格式
-| time | 時間 |
-| datetime | 日期+時間 |
+|   date    |      日期      | 可配合config的$_options['dateFormat']欄位定義日期格式 |
+|   time    |      時間      |
+| datetime  |   日期+時間    |
 
 ## 設定方式
 ### 設定檔

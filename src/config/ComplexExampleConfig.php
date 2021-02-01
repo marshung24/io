@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io\config;
 
 /**
@@ -33,7 +34,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
         // 模式：簡易(simple)、複雜(complex)
         $this->_options['type'] = 'complex';
         $this->_options['requiredField'] = array('u_no');
-        
+
         // 初始化
         $this->initialize();
     }
@@ -43,7 +44,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      * ************** Content Process Function **************
      * ******************************************************
      */
-    
+
     /**
      * 內容整併處理時執行 - 迴圈內自定步驟
      *
@@ -53,14 +54,15 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      *            當次迴圈的內容
      */
     protected function eachRefactor($key, &$row)
-    {}
+    {
+    }
 
     /**
      * **************************************************
      * ************** Map Builder Function **************
      * **************************************************
      */
-    
+
     /**
      * 初始化對映表
      */
@@ -93,7 +95,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
      * ************** Defined Function **************
      * **********************************************
      */
-    
+
     /**
      * 標題定義函式
      *
@@ -169,7 +171,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'col' => '1',
                     'row' => '1',
                     'style' => array(
-                        'format' =>'0.0_ ;[Red]\-0.0\ '
+                        'format' => '0.0_ ;[Red]\-0.0\ '
                     ),
                     'class' => '',
                     'default' => '',
@@ -177,7 +179,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                 )
             )
         );
-        
+
         // 標題2
         $this->_title[] = array(
             'config' => array(
@@ -244,7 +246,7 @@ class ComplexExampleConfig extends \marshung\io\config\abstracts\Config
                     'col' => '1',
                     'row' => '1',
                     'style' => array(
-                        'format' =>'0.0_ ;[Red]\-0.0\ '
+                        'format' => '0.0_ ;[Red]\-0.0\ '
                     ),
                     'class' => '',
                     'default' => '',

@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io\config;
 
 /**
@@ -30,7 +31,7 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
         $this->_options['sheetName'] = 'Worksheet';
         // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
         $this->_options['type'] = 'detect';
-        
+
         // 初始化
         $this->initialize();
     }
@@ -40,7 +41,7 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
      * ************** Content Process Function **************
      * ******************************************************
      */
-    
+
     /**
      * 內容整併處理時執行 - 迴圈內自定步驟
      *
@@ -50,33 +51,36 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
      *            當次迴圈的內容
      */
     protected function eachRefactor($key, &$row)
-    {}
+    {
+    }
 
     /**
      * **************************************************
      * ************** Map Builder Function **************
      * **************************************************
      */
-    
+
     /**
      * 初始化對映表
      */
     protected function listMapInitialize()
-    {}
+    {
+    }
 
     /**
      * **********************************************
      * ************** Defined Function **************
      * **********************************************
      */
-    
+
     /**
      * 標題定義函式
      *
      * 單一標題定義可擁有單列資料，所以可定義多個標題定義
      */
     protected function titleDefined()
-    {}
+    {
+    }
 
     /**
      * 內容定義函式
@@ -84,7 +88,8 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
      * 單一內容定義可擁有多列資料，所以只能有一個內容定義
      */
     protected function contentDefined()
-    {}
+    {
+    }
 
     /**
      * 結尾定義函式
@@ -92,5 +97,6 @@ class EmptyConfig extends \marshung\io\config\abstracts\Config
      * 單一結尾定義可擁有單列資料，所以可定義多個結尾定義
      */
     protected function footDefined()
-    {}
+    {
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace marshung\io\builder;
 
 /**
@@ -80,13 +81,13 @@ class ExcelStyleBuilder
             'datetime' => 'YYYY\-MM\-DD\ HH:MM:SS',
         )
     );
-    
+
     /**
      * *********************************************
      * ************** Public function **************
      * *********************************************
      */
-    
+
     /**
      * 建立Excel樣式 - 預設值
      *
@@ -97,11 +98,11 @@ class ExcelStyleBuilder
      * @param object $spreadsheet Excel物件
      * @return $sheet Excel物件
      */
-    public static function setExcelDefaultStyle(Array $style, &$spreadsheet)
+    public static function setExcelDefaultStyle(array $style, &$spreadsheet)
     {
         // 取得工作表
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         foreach ($style as $key => $value) {
             switch ($key) {
                 case 'width':
@@ -222,10 +223,10 @@ class ExcelStyleBuilder
                     break;
             }
         }
-        
+
         return new static();
     }
-    
+
     /**
      * 建立Excel樣式
      *
@@ -238,31 +239,31 @@ class ExcelStyleBuilder
      * @param int $rowIndex 列數
      * @return $sheet Excel物件
      */
-    public static function setExcelRangeStyle(Array $style, &$spreadsheet, $cellRange)
+    public static function setExcelRangeStyle(array $style, &$spreadsheet, $cellRange)
     {
         if (empty($style)) {
             // 沒有樣式資料，不處理
             return new static();
         }
-        
+
         // === 解析 - 欄位座標範圍 ===
         $crp = self::cellRangeParser($cellRange);
         if (empty($crp)) {
             // 欄位範圍格式誤，不處理
             return new static();
         }
-        
+
         // 取得欄位-起訖
         $cellStart = $crp[1];
         $cellEnd = $crp[3];
-        
+
         // 取得列-起訖
         $rowStart = $crp[2];
         $rowEnd = $crp[4];
-        
+
         // 取得工作表
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         // 遍歷樣式集 - 處理樣式設定
         foreach ($style as $key => $value) {
             switch ($key) {
@@ -389,10 +390,10 @@ class ExcelStyleBuilder
                     break;
             }
         }
-        
+
         return new static();
     }
-    
+
     /**
      * 凍結欄位
      * 
@@ -403,27 +404,28 @@ class ExcelStyleBuilder
     {
         // 取得工作表
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         $sheet->freezePane($freezeCell, $freezeCell);
     }
-    
-    
+
+
     public static function listBuilder()
-    {}
-    
+    {
+    }
+
     /**
      * ***********************************************
      * ************** Building Function **************
      * ***********************************************
      */
-    
-    
+
+
     /**
      * **********************************************
      * ************** Private Function **************
      * **********************************************
      */
-    
+
     /**
      * 解析 - 欄位座標範圍
      * 
@@ -432,10 +434,10 @@ class ExcelStyleBuilder
     protected static function cellRangeParser($cellRange)
     {
         preg_match('/([A-Z]+)([0-9]+)\:([A-Z]+)([0-9]+)/', $cellRange, $matches);
-        
+
         return $matches;
     }
-    
+
     /**
      * ******************************************
      * ************** Map Function **************
@@ -491,7 +493,7 @@ class ExcelStyleBuilder
         $alignmentMap = self::$_styleMap['excelVerticalAlignMap'];
         return isset($alignmentMap[$alignment]) ? $alignmentMap[$alignment] : \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER;
     }
-    
+
     /**
      * 轉換字串為excel框線樣式
      *
@@ -508,7 +510,7 @@ class ExcelStyleBuilder
         $borderMap = self::$_styleMap['excelBorderMap'];
         return isset($borderMap[$border]) ? $borderMap[$border] : \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE;
     }
-    
+
     /**
      * 儲存格格式
      *
@@ -522,6 +524,6 @@ class ExcelStyleBuilder
     {
         // 如果格式表中不存在，以該字串為格式 - 支援自定義格式
         $formatMap = self::$_styleMap['excelFormatMap'];
-        return isset($formatMap[$format]) ? $formatMap[$format] : $format;//\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
+        return isset($formatMap[$format]) ? $formatMap[$format] : $format; //\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
     }
 }
