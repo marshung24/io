@@ -4,18 +4,36 @@
 [![Latest Stable Version](https://poser.pugx.org/marshung/io/v/stable)](https://packagist.org/packages/marshung/io) [![Total Downloads](https://poser.pugx.org/marshung/io/downloads)](https://packagist.org/packages/marshung/io) [![Latest Unstable Version](https://poser.pugx.org/marshung/io/v/unstable)](https://packagist.org/packages/marshung/io) [![License](https://poser.pugx.org/marshung/io/license)](https://packagist.org/packages/marshung/io) [![composer.lock](https://poser.pugx.org/marshung/io/composerlock)](https://packagist.org/packages/marshung/io)
 
 # 目錄
+- [匯出匯入模組](#匯出匯入模組)
+- [目錄](#目錄)
 - [說明](#說明)
 - [安裝](#安裝)
 - [用法](#用法)
   - [有資料的結構定義物件](#有資料的結構定義物件)
+    - [匯出](#匯出)
+    - [匯入](#匯入)
   - [空的結構定義物件](#空的結構定義物件)
+    - [匯出](#匯出-1)
+    - [匯入](#匯入-1)
   - [手動處理-簡易模式](#手動處理-簡易模式)
+    - [匯出](#匯出-2)
+    - [匯入](#匯入-2)
   - [手動處理-複雜模式](#手動處理-複雜模式)
+    - [匯出](#匯出-3)
+    - [匯入](#匯入-3)
 - [樣式](#樣式)
   - [可用清單](#可用清單)
+    - [顏色](#顏色)
+    - [水平對齊](#水平對齊)
+    - [垂直對齊](#垂直對齊)
+    - [邊線](#邊線)
+    - [儲存格格式](#儲存格格式)
   - [設定方式](#設定方式)
-  - [手動-複雜模式-樣式](#手動-複雜模式-樣式)
-  - [樣式後處理](#樣式後處理)
+    - [設定檔](#設定檔)
+    - [手動-複雜模式-樣式](#手動-複雜模式-樣式)
+    - [樣式後處理](#樣式後處理)
+      - [自動模式-樣式後處理](#自動模式-樣式後處理)
+      - [手動模式-樣式後處理](#手動模式-樣式後處理)
 - [多頁工作表](#多頁工作表)
 
 
@@ -575,15 +593,15 @@ var_export($mismatch);
 
 
 ### 儲存格格式
-| 代碼 | 說明
-|:----:|:---:|
+| 代碼 | 說明 | 備註
+|:----:|:---:|:---:|
 | general | 通用格式 |
 | txt | 文字 |
 | text | 文字 |
 | string | 文字 |
 | number | 數字 |
 | number_00 | 數字(小數二位) |
-| date | 日期 |
+| date | 日期 | 可配合config的$_options['dateFormat']欄位定義日期格式
 | time | 時間 |
 | datetime | 日期+時間 |
 
@@ -649,7 +667,7 @@ class MyStyle extends marshung\io\style\IoStyle
 }
 ```
 
-- 設定結構構設定檔 ocnfig (節錄)
+- 設定結構構設定檔 config (節錄)
 如標題要用自定樣式集
 
 ```php

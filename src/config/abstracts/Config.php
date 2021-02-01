@@ -47,7 +47,9 @@ abstract class Config
         // 模式：簡易(simple)、複雜(complex)、待偵測(detect)
         'type' => 'detect',
         // 必要欄位，必需有值，提供讀取資料時驗証用 - 有設定，且必要欄位有無資料者，跳出 - 因各版本excel對空列定義不同，可能編輯過列，就會產生沒有結尾的空列
-        'requiredField' => array()
+        'requiredField' => [],
+        // 日期格式
+        'dateFormat' => 'Y-m-d',
     );
 
     /**
@@ -162,7 +164,12 @@ abstract class Config
         // ======
         
         // 清空暫存
-        $this->_cache = array();
+        $this->_cache = [
+            // 下拉選單資料轉換表
+            'valueTextMap' => [],
+            // 下拉選單資料轉換失敗記錄
+            'mismatch' => [],
+        ];
 
         return true;
     }
@@ -683,6 +690,9 @@ abstract class Config
                 // 執行資料轉換 value <=> text - 單筆資料
                 $this->valueTextConv($key, $row);
                 
+                // 資料匯入-日期格式轉換
+                $this->dateFormatConv($row);
+
                 // issue#13 Trim all data when parsing imported data
                 $row = array_map('trim', $row);
             }
@@ -751,6 +761,32 @@ abstract class Config
                 // 無符合的資料，記錄並清空
                 $this->_cache['mismatch']["$key"][$k] = $v;
                 $v =  '';
+            }
+        }
+    }
+
+    /**
+     * 資料匯入-日期格式轉換
+     * 
+     * - 因Excel通用/日期/時間格式的資料讀取有問題，但使用文字模式對使用者使用不便，因此加入解析函式
+     * - 如果欄位格式定義為日期格式時，還原日期格式
+     * - 條件
+     *   - 複雜模式
+     *   - 欄位style的format為date
+     *   - 暫不解析class內容
+     *
+     * @param array $row 當次迴圈的內容
+     * @return void
+     */
+    protected function dateFormatConv(&$row)
+    {
+        // 遍歷資料，並轉換內容
+        foreach ($row as $k => &$v) {
+            // 取得欄位格式定義 - 複雜模式才有
+            $format = $this->_content['defined'][$k]['style']['format'] ?? null;
+            // 資料轉換-日期格式，且資料為純數字時
+            if ($format === 'date' && \is_numeric($v)) {
+                $v = date($this->_options['dateFormat'] ?? 'Y-m-d', \PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($v));
             }
         }
     }

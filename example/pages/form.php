@@ -19,6 +19,7 @@
 <a href="index.php?op=export9">9.匯出 - 空資料+長工作表名</a><br/>
 <a href="index.php?op=export10">10.匯出 - 二頁</a><br/>
 <a href="index.php?op=export11">11.匯出 - 沒有ConfigSheet-無法匯入</a><br/>
+<a href="index.php?op=export12">12.匯出 - 通用/日期/文字 格式取得日期資料(下載後編輯生日欄位)</a><br/>
 
 <br/>
 

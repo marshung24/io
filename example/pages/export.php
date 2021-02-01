@@ -614,3 +614,269 @@ function export11()
     $builder->output('export-11', 'withoutconfig');
 }
 
+/**
+ * 匯出 - 通用/日期/文字 格式取得日期資料
+ * 
+ * 下載後編輯生日欄位再匯入，觀察日期是否有轉換
+ */
+function export12()
+{
+    // 取得原始資料
+    $data = getData('12');
+    
+    // 結構定義-複雜模式
+    // 標題1
+    $title1 = array(
+        'config' => array(
+            'type' => 'title',
+            'name' => 'title1',
+            'style' => array(
+                'font-size' => '16'
+            ),
+            'class' => ''
+        ),
+        'defined' => array(
+            't1' => array(
+                'key' => 't1',
+                'value' => '帳號',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't2' => array(
+                'key' => 't2',
+                'value' => '姓名',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't3' => array(
+                'key' => 't3',
+                'value' => '身分證字號',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't4' => array(
+                'key' => 't4',
+                'value' => '生日',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't5' => array(
+                'key' => 't5',
+                'value' => '性別',
+                'col' => '2',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't6' => array(
+                'key' => 't6',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            )
+        )
+    );
+    
+    // 標題2
+    $title2 = array(
+        'config' => array(
+            'type' => 'title',
+            'name' => 'example',
+            'style' => array(),
+            'class' => 'example'
+        ),
+        'defined' => array(
+            't1' => array(
+                'key' => 't1',
+                'value' => 'A001',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't2' => array(
+                'key' => 't2',
+                'value' => '派大星',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't3' => array(
+                'key' => 't3',
+                'value' => 'ET9000001',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't4' => array(
+                'key' => 't4',
+                'value' => '2000-01-01',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't5' => array(
+                'key' => 't5',
+                'value' => '男',
+                'col' => '2',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            't6' => array(
+                'key' => 't6',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            )
+        )
+    );
+    
+    // 內容
+    $content = array(
+        'config' => array(
+            'type' => 'content',
+            'name' => 'content',
+            'style' => array(),
+            'class' => ''
+        ),
+        'defined' => array(
+            'u_no' => array(
+                'key' => 'u_no',
+                'value' => '帳號',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            'c_name' => array(
+                'key' => 'c_name',
+                'value' => '姓名',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            'id_no' => array(
+                'key' => 'id_no',
+                'value' => '身分證字號',
+                'col' => '1',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            'birthday' => array(
+                'key' => 'birthday',
+                'value' => '生日',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => 'date'),
+                'class' => '',
+                'default' => '',
+                'list' => ''
+            ),
+            'gender' => array(
+                'key' => 'gender',
+                'value' => '性別',
+                'col' => '2',
+                'row' => '1',
+                'style' => array(),
+                'class' => '',
+                'default' => '1',
+                'list' => ''
+            ),
+            'text' => array(
+                'key' => 'text',
+                'value' => '備註',
+                'col' => '1',
+                'row' => '1',
+                'style' => array('format' => '0.0_ ;[Red]\-0.0\ '),
+                'class' => '',
+                'default' => '1',
+                'list' => ''
+            )
+        )
+    );
+    
+    // IO物件建構
+    $io = new \marshung\io\IO();
+    $io->setOption('export-12', 'fileName');
+    
+    // 手動建構相關物件
+    $io->setConfig()
+    ->setBuilder()
+    ->setStyle();
+    
+    // 載入外部定義
+    $conf = $io->getConfig()
+    ->setTitle($title1)
+    ->setTitle($title2)
+    ->setContent($content);
+    
+    // 建構外部對映表
+    $listMap = array(
+        'gender' => array(
+            array(
+                'value' => '1',
+                'text' => '男'
+            ),
+            array(
+                'value' => '0',
+                'text' => '女'
+            )
+        )
+    );
+    
+    // 載入外部對映表
+    $conf->setList($listMap);
+    
+    // 匯出處理 - 建構匯出資料 - 手動處理
+    $io->setData($data)->exportBuilder();
+}
+
+
