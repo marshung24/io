@@ -179,6 +179,8 @@ class ExcelBuilder
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($fileType);
         /**
          * Advise the Reader that we only want to load cell data *
+         * 
+         * 只讀取單元格中的原始數據：不讀取任何格式信息，getFormatCode()將無法正確使用，但效能大幅提升
          */
         $reader->setReadDataOnly(true);
         /**
