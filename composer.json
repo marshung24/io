@@ -15,6 +15,6 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "nueip/phpspreadsheet-helper": "^1.0"
+        "nueip/phpspreadsheet-helper": "^1.1"
     }
 }
