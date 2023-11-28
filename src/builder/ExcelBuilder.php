@@ -734,7 +734,10 @@ class ExcelBuilder
         $this->_builder->setSheet($sheet);
         // Content Validate Error Count
         $rowError = 0;
+        $rowNumber = 0;
         while ($row = $this->_builder->getRow()) {
+            $rowNumber++;
+            
             // 略過不要的資料 - 標題
             if ($titleRowNumber > 0) {
                 $titleRowNumber--;
@@ -757,7 +760,7 @@ class ExcelBuilder
             }
 
             // 取得資料
-            $data[] = $row;
+            $data[$rowNumber] = $row;
         }
 
         // 去除結尾資料
